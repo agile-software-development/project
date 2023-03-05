@@ -3,6 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
+    groups = None
+    user_permissions = None
     phone_number = models.CharField(max_length=200)
     avatar = models.FileField(upload_to='uploads/avatars/')
     themes = (
