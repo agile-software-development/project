@@ -1,23 +1,10 @@
 <!-- register.html -->
-
 {% extends 'base.html' %}
-
 {% block content %}
-  <h2>Register</h2>
+{% load crispy_forms_tags %}
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Register</button>
   </form>
-    {% if form.errors %}
-    <div>
-      <ul>
-        {% for field in form %}
-          {% for error in field.errors %}
-            <li>{{ field.label }}: {{ error }}</li>
-          {% endfor %}
-        {% endfor %}
-      </ul>
-    </div>
-  {% endif %}
 {% endblock %}
