@@ -4,7 +4,7 @@ from .models import User
 
 
 class UserRegisterForm(UserCreationForm):
-    phone_number = forms.CharField(required=True, max_length=200)
+    phone_number = forms.CharField(label='Phone', required=True, max_length=200)
 
     class Meta:
         model = User
@@ -16,3 +16,8 @@ class UserRegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Username')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
