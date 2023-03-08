@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import User, Task
 
 
 class UserRegisterForm(UserCreationForm):
@@ -29,3 +29,9 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("phone_number", "first_name", "last_name")
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        exclude = ('created', 'updated')
