@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
-
+AUTH_USER_MODEL = "task.user"
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'

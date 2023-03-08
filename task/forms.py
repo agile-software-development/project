@@ -21,3 +21,11 @@ class UserRegisterForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username')
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+
+class UserProfileForm(forms.ModelForm):
+    phone_number = forms.CharField(label='Phone', required=False, max_length=200)
+
+    class Meta:
+        model = User
+        fields = ("phone_number", "first_name", "last_name")

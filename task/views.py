@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 # Create your views here.
 
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, LoginForm
+from .forms import UserRegisterForm, LoginForm, UserProfileForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 
@@ -46,3 +47,15 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
+
+
+@login_required
+def update_profile_view(request):
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('home')
+    else:
+        form = UserProfileForm(instance=request.user)
+    return render(request=request, template_name="update_profile.html", context={"form": form, "user": request.user})
