@@ -7,9 +7,15 @@
             <div class="max-w-md">
                 <h1 class="text-5xl font-bold">Hello there</h1>
                 <p class="py-6">Welcome to Trello, a simple, convenient tool to manage your tasks and team members</p>
-                <a href="/user/signup">
-                    <button class="btn btn-primary">Get Started</button>
-                </a>
+                {% if not request.user.is_authenticated %}
+                    <a href={% url 'login' %}>
+                        <button class="btn btn-primary">Get Started</button>
+                    </a>
+                {% else %}
+                    <a href={% url 'profile' %}>
+                        <button class="btn btn-primary">Profile</button>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>
