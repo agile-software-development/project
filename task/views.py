@@ -8,7 +8,7 @@ from .models import Task
 
 
 def home(request):
-    return render(request, 'homepage.html')
+    return render(request, 'newHome.html')
 
 
 def register_view(request):
