@@ -1,12 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-
-# Create your views here.
-
-from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm
 from django.contrib.auth import login, authenticate
-from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.views.generic.list import ListView
+
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm
+from .models import Task
 
 
 def home(request):
@@ -73,3 +71,7 @@ def create_task_view(request):
         form = TaskForm()
     return render(request=request, template_name="task.html", context={"form": form})
 
+
+class TaskListView(ListView):
+    model = Task
+    paginate_by = 100  # if pagination is desired
