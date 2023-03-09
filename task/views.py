@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -67,7 +68,7 @@ def create_task_view(request):
         form = TaskForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('list-tasks')
         form.add_error(None, "Unsuccessful registration. Invalid information.")
     else:
         form = TaskForm()
@@ -83,3 +84,9 @@ class TaskDeleteView(DeleteView):
     model = Task
     success_url = reverse_lazy('list-tasks')
     template_name = "task/task_delete.html"
+
+    success_message = "Thing was deleted successfully."
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(TaskDeleteView, self).delete(request, *args, **kwargs)

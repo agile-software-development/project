@@ -4,7 +4,6 @@
     <div class="row">
         {% for object in  object_list %}
             <div class="card col-4 m-2" style="width: 18rem;">
-                {#            <img class="card-img-top" src="..." alt="Card image cap">#}
                 <div class="card-body">
                     <h5 class="card-title">
                         {{ object.name }}
@@ -16,6 +15,8 @@
                     {% endfor %}
                 </div>
             </div>
+        {% empty %}
+            <p>No task has created yet.</p>
         {% endfor %}
     </div>
 {% endblock %}
