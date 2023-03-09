@@ -6,6 +6,16 @@ from task.models import User, Task
 
 class UserTest(TestCase):
     def test_register(self):
+        # passwords aren't equal
+        self.client.post("/user/signup/", data={"phone_number": "09227562938",
+                                                           "username": "user1",
+                                                           "firstname": "user1_firstname",
+                                                           "lastname": "user1_lastname",
+                                                           "password1": "1111",
+                                                           "password2": "2222"
+                                                           })
+
+        self.assertEqual(User.objects.count(), 0)
         # create new account
         self.client.post("/user/signup/", data={"phone_number": "09227562938",
                                                 "username": "user1",
