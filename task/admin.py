@@ -6,3 +6,8 @@ from . import models
 @admin.register(models.User)
 class UserAdmin(admin.ModelAdmin):
     list_display = [field.name for field in models.User._meta.fields]
+
+
+@admin.register(models.Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Task._meta.fields]
