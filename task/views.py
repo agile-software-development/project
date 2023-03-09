@@ -1,7 +1,9 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic.list import ListView
+from django.views.generic.edit import DeleteView
 
 from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm
 from .models import Task
@@ -75,3 +77,9 @@ def create_task_view(request):
 class TaskListView(ListView):
     model = Task
     paginate_by = 100  # if pagination is desired
+
+
+class TaskDeleteView(DeleteView):
+    model = Task
+    success_url = reverse_lazy('list-tasks')
+    template_name = "task/task_delete.html"
