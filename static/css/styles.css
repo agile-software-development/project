@@ -2665,9 +2665,9 @@ textarea.form-control-lg {
 .form-floating {
   position: relative;
 }
-.form-floating > .form-control, .form-floating > .dataTable-input,
-.form-floating > .form-select,
-.form-floating > .dataTable-selector {
+.form-floating > div > .form-control, .form-floating > .form-control, .form-floating > div > .dataTable-input, .form-floating > .dataTable-input,
+.form-floating > div > .form-select, .form-floating > .form-select,
+.form-floating > div > .dataTable-selector , .form-floating > .dataTable-selector {
   height: calc(3.5rem + 2px);
   line-height: 1.25;
 }
@@ -2687,35 +2687,35 @@ textarea.form-control-lg {
     transition: none;
   }
 }
-.form-floating > .form-control, .form-floating > .dataTable-input {
+.form-floating > div > .form-control, .form-floating > .form-control, .form-floating > div > .dataTable-input , .form-floating > .dataTable-input {
   padding: 1rem 0.75rem;
 }
-.form-floating > .form-control::-moz-placeholder, .form-floating > .dataTable-input::-moz-placeholder {
+.form-floating > div > .form-control::-moz-placeholder, .form-floating > .form-control::-moz-placeholder, .form-floating > div > .dataTable-input::-moz-placeholder , .form-floating > .dataTable-input::-moz-placeholder {
   color: transparent;
 }
-.form-floating > .form-control:-ms-input-placeholder, .form-floating > .dataTable-input:-ms-input-placeholder {
+.form-floating > div > .form-control:-ms-input-placeholder, .form-floating > .form-control:-ms-input-placeholder, .form-floating > div > .dataTable-input:-ms-input-placeholder , .form-floating > .dataTable-input:-ms-input-placeholder {
   color: transparent;
 }
-.form-floating > .form-control::placeholder, .form-floating > .dataTable-input::placeholder {
+.form-floating > div > .form-control::placeholder, .form-floating > .form-control::placeholder, .form-floating > div > .dataTable-input::placeholder , .form-floating > .dataTable-input::placeholder {
   color: transparent;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown), .form-floating > .dataTable-input:not(:-moz-placeholder-shown) {
+.form-floating > div > .form-control:not(:-moz-placeholder-shown), .form-floating > .form-control:not(:-moz-placeholder-shown), .form-floating > div > .dataTable-input:not(:-moz-placeholder-shown) , .form-floating > .dataTable-input:not(:-moz-placeholder-shown) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:not(:-ms-input-placeholder), .form-floating > .dataTable-input:not(:-ms-input-placeholder) {
+.form-floating > div > .form-control:not(:-ms-input-placeholder), .form-floating > .form-control:not(:-ms-input-placeholder), .form-floating > div > .dataTable-input:not(:-ms-input-placeholder) , .form-floating > .dataTable-input:not(:-ms-input-placeholder) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:focus, .form-floating > .dataTable-input:focus, .form-floating > .form-control:not(:placeholder-shown), .form-floating > .dataTable-input:not(:placeholder-shown) {
+.form-floating > div > .form-control:focus, .form-floating > .form-control:focus, .form-floating > div > .dataTable-input:focus, .form-floating > .dataTable-input:focus, .form-floating > div > .form-control:not(:placeholder-shown), .form-floating > .form-control:not(:placeholder-shown), .form-floating > div > .dataTable-input:not(:placeholder-shown) , .form-floating > .dataTable-input:not(:placeholder-shown) {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:-webkit-autofill, .form-floating > .dataTable-input:-webkit-autofill {
+.form-floating > div > .form-control:-webkit-autofill, .form-floating > .form-control:-webkit-autofill, .form-floating > div > .dataTable-input:-webkit-autofill , .form-floating > .dataTable-input:-webkit-autofill {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }
-.form-floating > .form-select, .form-floating > .dataTable-selector {
+.form-floating > div > .form-select, .form-floating > .form-select, .form-floating > div > .dataTable-selector , .form-floating > .dataTable-selector {
   padding-top: 1.625rem;
   padding-bottom: 0.625rem;
 }

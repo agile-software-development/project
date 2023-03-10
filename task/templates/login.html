@@ -1,24 +1,14 @@
 {% extends 'new_base.html' %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 {% block title %}ورود{% endblock %}
 {% block body %}
     <div class="card shadow-lg border-0 rounded-lg mt-5">
         <div class="card-header"><h3 class="text-center font-weight-light my-4">ورود</h3></div>
         <div class="card-body">
-            <form>
-                <div class="form-floating mb-3">
-                    <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com"/>
-                    <label for="inputEmail">نام کاربری</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input class="form-control" id="inputPassword" type="password" placeholder="رمز عبور"/>
-                    <label for="inputPassword">رمز عبور</label>
-                </div>
-                <div class="form-floating">
-                    <a class="small" href="#">رمز عبور خود را فراموش کرده‌اید؟</a>
-                </div>
-                <div class="mt-4 mb-0">
-                    <div class="d-grid"><a class="btn btn-success btn-block" href="login.html">ورود</a></div>
-                </div>
+            <form action="." method="post">
+                {% crispy form %}
+                {% csrf_token %}
             </form>
         </div>
         <div class="card-footer text-center py-3">
