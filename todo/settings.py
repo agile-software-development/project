@@ -134,3 +134,4 @@ CSRF_TRUSTED_ORIGINS = ['https://agile-software-development.buddy.cloud', 'http:
 LOGIN_URL = '/login'
 APPEND_SLASH = True
 SMS_SECRET = os.environ.get('SMS_API_PASSWORD')
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
