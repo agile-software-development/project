@@ -4,8 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
-from django.views.generic.edit import DeleteView
-from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 
@@ -20,6 +18,8 @@ def home(request):
 
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('list-boards')
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -110,6 +110,8 @@ class TaskDeleteView(DeleteView):
 
 
 def reset_password(request):
+    if request.user.is_authenticated:
+        return redirect('list-boards')
     if request.method == 'POST':
         username = request.POST.get('username')
         mobile = request.POST.get('mobile')
