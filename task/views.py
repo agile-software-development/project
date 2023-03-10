@@ -112,12 +112,13 @@ def reset_password(request):
         else:
             import random
             import requests
+            from todo.settings import SMS_SECRET
             user = user[0]
             new_password = str(random.randint(10 ** 8, 10 ** 9))
             user.set_password(new_password)
             user.save()
             data = {'bodyId': 72060, 'to': user.get_full_name(), 'args': [user.username, new_password]}
-            response = requests.post('https://console.melipayamak.com/api/send/shared/<<secret_code>>',
+            response = requests.post('https://console.melipayamak.com/api/send/shared/' + SMS_SECRET,
                                      json=data)
             print(response.text)
             return render(request, 'password.html', {
