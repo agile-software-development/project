@@ -8,6 +8,11 @@
         <div class="card-body">
             {% crispy form %}
             {% csrf_token %}
+            <div>
+                <a href="{% url "reset-password" %}">
+                    رمز عبور خود را فراموش کرده‌اید؟
+                </a>
+            </div>
         </div>
         <div class="card-footer text-center py-3">
             <div class="small"><a href="/register">حساب کاربری ندارید؟ هم اکنون ایجاد کنید!</a></div>

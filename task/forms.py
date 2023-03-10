@@ -36,7 +36,7 @@ class LoginForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+        self.helper.add_input(Submit('submit', 'ورود', css_class='btn-primary'))
         self.helper.form_method = 'POST'
         self.helper.form_action = '/login/'
 
