@@ -56,3 +56,8 @@ class Task(BaseModel):
         return self.name
 
 
+class Comment(BaseModel):
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_comments')
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True, blank=True, default=None)
