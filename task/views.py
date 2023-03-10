@@ -16,7 +16,7 @@ from .models import Task, Board, User
 def home(request):
     if request.user.is_authenticated:
         return redirect('list-boards')
-    return render(request, 'newHome.html')
+    return render(request, 'home.html')
 
 
 def register_view(request):
