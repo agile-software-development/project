@@ -149,6 +149,11 @@ class TaskUpdateView(UpdateView):
     form_class = TaskForm
     success_url = reverse_lazy('list-tasks')
 
+    def form_valid(self, form):
+        response = super(TaskUpdateView, self).form_valid(form)
+        self.object.members.add(self.object.creator)
+        return response
+
 
 class BoardCreateView(CreateView):
     model = Board
@@ -181,3 +186,8 @@ class BoardUpdateView(UpdateView):
     model = Board
     form_class = BoardForm
     success_url = reverse_lazy('list-boards')
+
+    def form_valid(self, form):
+        response = super(BoardUpdateView, self).form_valid(form)
+        self.object.members.add(self.object.creator)
+        return response
