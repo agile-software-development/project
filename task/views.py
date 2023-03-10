@@ -3,6 +3,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views.generic import DetailView
+from django.views.generic.edit import DeleteView
+from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 
@@ -83,6 +86,10 @@ def create_task_view(request):
     else:
         form = TaskForm()
     return render(request=request, template_name="task.html", context={"form": form})
+
+
+class TaskDetailView(DetailView):
+    model = Task
 
 
 class TaskListView(ListView):
