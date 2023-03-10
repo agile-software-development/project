@@ -11,6 +11,8 @@ from .models import Task
 
 
 def home(request):
+    if request.user.is_authenticated:
+        return redirect('list-tasks')
     return render(request, 'newHome.html')
 
 
