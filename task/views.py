@@ -215,3 +215,7 @@ class CreateTaskCommentView(CreateView):
 
     def get_success_url(self):
         return reverse('task-detail', args=(self.kwargs['task_id'],))
+
+
+def custom_404(request, exception):
+    return render(request, "404.html")
