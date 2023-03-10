@@ -2,7 +2,7 @@
 {% load crispy_forms_filters %}
 {% block content %}
 {% load crispy_forms_tags %}
-  <h1>{{ user.username }}</h1>
+  <h1>{{ object.name }}</h1>
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
