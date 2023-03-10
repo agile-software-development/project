@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView, UpdateView
 
 from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm
 from .models import Task, User
@@ -93,7 +93,7 @@ class TaskDeleteView(DeleteView):
     success_url = reverse_lazy('list-tasks')
     template_name = "task/task_delete.html"
 
-    success_message = "Thing was deleted successfully."
+    success_message = "Task was deleted successfully."
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
@@ -128,3 +128,10 @@ def reset_password(request):
         return render(request, 'password.html', {
             "success": False
         })
+
+
+class TaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy('list-tasks')
+    # template_name =
