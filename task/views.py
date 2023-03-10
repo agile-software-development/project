@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView, UpdateView
 
 from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm
-from .models import Task
+from .models import Task, User
 
 
 def home(request):
@@ -98,6 +98,37 @@ class TaskDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(TaskDeleteView, self).delete(request, *args, **kwargs)
+
+
+def reset_password(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        mobile = request.POST.get('mobile')
+        user = User.objects.filter(username=username, phone_number=mobile)
+        if not user:
+            return render(request, 'password.html', {
+                'error': True
+            })
+        else:
+            import random
+            import requests
+            from todo.settings import SMS_SECRET
+            user = user[0]
+            new_password = str(random.randint(10 ** 8, 10 ** 9))
+            user.set_password(new_password)
+            user.save()
+            data = {'bodyId': 72060, 'to': user.get_full_name(), 'args': [user.username, new_password]}
+            response = requests.post('https://console.melipayamak.com/api/send/shared/' + SMS_SECRET,
+                                     json=data)
+            print(response.text)
+            return render(request, 'password.html', {
+                "success": True
+            })
+
+    else:
+        return render(request, 'password.html', {
+            "success": False
+        })
 
 
 class TaskUpdateView(UpdateView):
