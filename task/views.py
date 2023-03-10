@@ -12,7 +12,7 @@ from .models import Task, Board
 
 def home(request):
     if request.user.is_authenticated:
-        return redirect('list-tasks')
+        return redirect('list-boards')
     return render(request, 'newHome.html')
 
 
