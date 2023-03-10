@@ -1,0 +1,16 @@
+{% extends 'layout-sidenav-light.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    <h1>Board</h1>
+    <h2>{{ object.name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if object %}
+            <button type="submit" class="btn btn-primary">Update</button>
+        {% else %}
+            <button type="submit" class="btn btn-primary">Create</button>
+        {% endif %}
+    </form>
+{% endblock %}

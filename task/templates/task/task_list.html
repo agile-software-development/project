@@ -1,20 +1,32 @@
-{% extends 'base.html' %}
+{% extends 'layout-sidenav-light.html' %}
 
 {% block content %}
     <div class="row">
         {% for object in  object_list %}
             <div class="card col-4 m-2" style="width: 18rem;">
-                {#            <img class="card-img-top" src="..." alt="Card image cap">#}
+                <div class="card-header">
+                    {{ object.get_state_display }}
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">
-                        {{ object.name }}
-                        <span class="badge badge-secondary">{{ object.state.label }}</span></h5>
+                        <a href="{% url 'task-detail' object.pk %}">
+                            {{ object.name }}
+                        </a>
+                        <a href="{% url 'update-task' object.id %}">
+                            <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
+                        </a>
+                    </h5>
                     <p class="card-text">{{ object.description }}</p>
                     {% for member in object.members.all %}
                         <button class="btn btn-primary">{{ member.get_full_name }}</button>
                     {% endfor %}
+                    <a href="/tasks/delete/{{ object.id }}">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </a>
                 </div>
             </div>
+        {% empty %}
+            <p>No task has created yet.</p>
         {% endfor %}
     </div>
 {% endblock %}

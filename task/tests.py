@@ -7,7 +7,7 @@ from task.models import User, Task
 class UserTest(TestCase):
     def test_register(self):
         # passwords aren't equal
-        self.client.post("/user/signup/", data={"phone_number": "09227562938",
+        self.client.post("/register/", data={"phone_number": "09227562938",
                                                            "username": "user1",
                                                            "firstname": "user1_firstname",
                                                            "lastname": "user1_lastname",
@@ -17,7 +17,7 @@ class UserTest(TestCase):
 
         self.assertEqual(User.objects.count(), 0)
         # create new account
-        self.client.post("/user/signup/", data={"phone_number": "09227562938",
+        self.client.post("/register/", data={"phone_number": "09227562938",
                                                 "username": "user1",
                                                 "firstname": "user1_firstname",
                                                 "lastname": "user1_lastname",
@@ -35,7 +35,7 @@ class TaskTest(TestCase):
 
     def test_create_task(self):
         self.client.login(username="user1", password="a;ljf034")
-        response = self.client.post("/user/create-task/", data={"name": "task1",
+        response = self.client.post("/create-task/", data={"name": "task1",
                                                                 "creator": "1",
                                                                 "state": "2",
                                                                 "description": "description1",
