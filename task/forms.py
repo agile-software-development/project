@@ -2,6 +2,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Q
 
 from .models import User, Task, Board
 
@@ -55,6 +56,25 @@ class TaskForm(forms.ModelForm):
 
 
 class BoardForm(forms.ModelForm):
+    tasks = forms.ModelMultipleChoiceField(required=False, queryset=Task.objects.none())
+
     class Meta:
         model = Board
         exclude = ('created', 'updated', 'creator')
+
+    def __init__(self, *args, **kwargs):
+        super(BoardForm, self).__init__(*args, **kwargs)
+        self.fields['tasks'].queryset = Task.objects.filter(Q(board__isnull=True) | Q(board=self.instance))
+        self.fields['tasks'].initial = Task.objects.filter(board=self.instance)
+
+    def save(self, commit=True):
+        instance = super(BoardForm, self).save(commit)
+        for task in instance.task_set.all():
+            task.board = None
+            task.save()
+
+        for task in self.cleaned_data['tasks']:
+            task.board = instance
+            task.save()
+        return instance
+
