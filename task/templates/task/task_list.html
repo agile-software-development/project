@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'layout-sidenav-light.html' %}
 
 {% block content %}
     <div class="row">
@@ -11,8 +11,8 @@
                     <p class="card-text">{{ object.description }}</p>
                     {% for member in object.members.all %}
                         <button class="btn btn-primary">{{ member.get_full_name }}</button>
-                        <a href="/user/tasks/delete/{{ object.id }}"><button class="btn btn-danger" type="submit">Delete</button></a>
                     {% endfor %}
+                    <a href="/user/tasks/delete/{{ object.id }}"><button class="btn btn-danger" type="submit">Delete</button></a>
                 </div>
             </div>
         {% empty %}

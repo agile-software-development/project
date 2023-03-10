@@ -11,7 +11,9 @@ from .models import Task
 
 
 def home(request):
-    return render(request, 'homepage.html')
+    if request.user.is_authenticated:
+        return redirect('list-tasks')
+    return render(request, 'newHome.html')
 
 
 def register_view(request):
