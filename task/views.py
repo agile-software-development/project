@@ -80,6 +80,7 @@ def create_task_view(request):
         if form.is_valid():
             instance = form.save()
             instance.creator = request.user
+            instance.members.add(request.user)
             instance.save()
             return redirect('list-tasks')
         form.add_error(None, "Unsuccessful registration. Invalid information.")
@@ -95,6 +96,9 @@ class TaskDetailView(DetailView):
 class TaskListView(ListView):
     model = Task
     paginate_by = 100  # if pagination is desired
+
+    def get_queryset(self):
+        return Task.objects.filter(members__id=self.request.user.id)
 
 
 class TaskDeleteView(DeleteView):
@@ -154,6 +158,7 @@ class BoardCreateView(CreateView):
     def form_valid(self, form):
         response = super(BoardCreateView, self).form_valid(form)
         self.object.creator = self.request.user
+        self.object.members.add(self.request.user)
         self.object.save()
         return response
 
@@ -161,6 +166,9 @@ class BoardCreateView(CreateView):
 class BoardListView(ListView):
     model = Board
     paginate_by = 100
+
+    def get_queryset(self):
+        return Board.objects.filter(members__id=self.request.user.id)
 
 
 class BoardDeleteView(DeleteView):
