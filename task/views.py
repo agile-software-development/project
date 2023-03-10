@@ -2,15 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView
-from django.views.generic.edit import DeleteView
-from django.views.generic.edit import UpdateView
-from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
+from django.views.generic.list import ListView
 
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm
-from .models import Task, Board, User
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm
+from .models import Task, Board, User, Comment
 
 
 def home(request):
@@ -91,6 +89,12 @@ def create_task_view(request):
 
 class TaskDetailView(DetailView):
     model = Task
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = TaskCommentForm()
+        context['comments'] = Comment.objects.filter(task_id=self.kwargs['pk'])
+        return context
 
 
 class TaskListView(ListView):
@@ -191,3 +195,19 @@ class BoardUpdateView(UpdateView):
         response = super(BoardUpdateView, self).form_valid(form)
         self.object.members.add(self.object.creator)
         return response
+
+
+class CreateTaskCommentView(CreateView):
+    model = Comment
+    form_class = TaskCommentForm
+    success_url = reverse_lazy('list-tasks')
+
+    def form_valid(self, form):
+        response = super(CreateTaskCommentView, self).form_valid(form)
+        self.object.creator = self.request.user
+        self.object.task_id = self.kwargs['task_id']
+        self.object.save()
+        return response
+
+    def get_success_url(self):
+        return reverse('task-detail', args=(self.kwargs['task_id'],))

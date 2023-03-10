@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 
-from .models import User, Task, Board
+from .models import User, Task, Board, Comment
 
 
 class UserRegisterForm(UserCreationForm):
@@ -78,3 +78,8 @@ class BoardForm(forms.ModelForm):
             task.save()
         return instance
 
+
+class TaskCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('title', 'description')
