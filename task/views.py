@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
-from django.views.generic.edit import DeleteView, UpdateView
+from django.views.generic.edit import DeleteView, UpdateView, CreateView
 
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm
-from .models import Task
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm
+from .models import Task, Board
 
 
 def home(request):
@@ -104,4 +104,32 @@ class TaskUpdateView(UpdateView):
     model = Task
     form_class = TaskForm
     success_url = reverse_lazy('list-tasks')
-    # template_name =
+
+
+class BoardCreateView(CreateView):
+    model = Board
+    form_class = BoardForm
+    success_url = reverse_lazy('list-boards')
+
+    def form_valid(self, form):
+        response = super(BoardCreateView, self).form_valid(form)
+        self.object.creator = self.request.user
+        self.object.save()
+        return response
+
+
+class BoardListView(ListView):
+    model = Board
+    paginate_by = 100
+
+
+class BoardDeleteView(DeleteView):
+    model = Board
+    template_name = "task/board_delete.html"
+    success_url = reverse_lazy('list-boards')
+
+
+class BoardUpdateView(UpdateView):
+    model = Board
+    form_class = BoardForm
+    success_url = reverse_lazy('list-boards')

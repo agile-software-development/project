@@ -3,7 +3,7 @@ from crispy_forms.layout import *
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import User, Task
+from .models import User, Task, Board
 
 
 class UserRegisterForm(UserCreationForm):
@@ -52,3 +52,9 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         exclude = ('created', 'updated')
+
+
+class BoardForm(forms.ModelForm):
+    class Meta:
+        model = Board
+        exclude = ('created', 'updated', 'creator')

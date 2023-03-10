@@ -27,10 +27,24 @@ class User(AbstractUser):
     theme = models.CharField(max_length=255, choices=themes)
 
 
+class Board(BaseModel):
+    name = models.CharField(max_length=255)
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_boards')
+    members = models.ManyToManyField(User)
+
+    def __str__(self):
+        return self.name
+
+
 class Task(BaseModel):
     name = models.CharField(max_length=255)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_tasks')
     state = models.PositiveSmallIntegerField(choices=TaskStates.choices, default=TaskStates.Todo.value)
     description = models.TextField()
     members = models.ManyToManyField(User)
+    board = models.ForeignKey(Board, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+
+    def __str__(self):
+        return self.name
+
 

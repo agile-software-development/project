@@ -1,0 +1,35 @@
+{% extends 'layout-sidenav-light.html' %}
+
+{% block content %}
+    <div class="row">
+        {% for object in  object_list %}
+            <div class="card col-4 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ object.name }}
+                        <a href="{% url 'update-board' object.id %}">
+                            <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
+                        </a>
+                    </h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">tasks:
+                            {% for task in object.task_set.all %}
+                                <a href="{% url 'update-task' task.id %}"><button class="btn  btn-outline-primary">{{ task.name }}</button></a>
+                            {% endfor %}
+                        </li>
+                        <li class="list-group-item">members:
+                            {% for member in object.members.all %}
+                                <button class="btn btn-primary">{{ member.get_full_name }}</button>
+                            {% endfor %}
+                        </li>
+                    </ul>
+                    <a href="{% url 'delete-board' object.id %}">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No Board has created yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
