@@ -11,3 +11,8 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(models.Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = [field.name for field in models.Task._meta.fields]
+
+
+@admin.register(models.Board)
+class BoardAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.Board._meta.fields]

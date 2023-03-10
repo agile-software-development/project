@@ -37,6 +37,17 @@
         <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
+                    <div class="sb-sidenav-menu-heading">Boards</div>
+                    <a class="nav-link" href="{% url 'list-boards' %}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                        Board List
+                    </a>
+                    <a class="nav-link" href="{% url 'create-board' %}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-plus"></i></div>
+                        Create Board
+                    </a>
+                </div>
+                <div class="nav">
                     <div class="sb-sidenav-menu-heading">Tasks</div>
                     <a class="nav-link" href="{% url 'list-tasks' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
