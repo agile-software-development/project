@@ -9,7 +9,9 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
-                        {{ object.name }}
+                        <a href="{% url 'task-detail' object.pk %}">
+                            {{ object.name }}
+                        </a>
                         <a href="{% url 'update-task' object.id %}">
                             <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
                         </a>
