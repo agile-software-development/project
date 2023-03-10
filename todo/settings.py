@@ -129,7 +129,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-CSRF_TRUSTED_ORIGINS = ['https://agile-software-development.buddy.cloud']
+CSRF_TRUSTED_ORIGINS = ['https://agile-software-development.buddy.cloud', 'http://51.89.107.199:8000']
 LOGIN_URL = '/login'
 APPEND_SLASH = True
 SMS_SECRET = os.environ.get('SMS_API_PASSWORD')
