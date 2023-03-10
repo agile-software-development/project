@@ -1,4 +1,5 @@
 {% extends 'authenticated_user_base.html' %}
+{% load crispy_forms_filters %}
 
 {% block content %}
     <div class="m-2">
@@ -16,6 +17,31 @@
             <a href="/tasks/delete/{{ object.id }}">
                 <button class="btn btn-danger" type="submit">Delete</button>
             </a>
+        </div>
+        <hr/>
+        <div class="container mt-4">
+            {% for comment in comments %}
+                <div class="row">
+                    <p class="fw-bold h5 m-0">
+                        {{ comment.title }}
+                    </p>
+                    <small class="fst-italic small text-secondary">
+                        {{ comment.creator.get_full_name }}
+                    </small>
+                    <p>
+                        {{ comment.description }}
+                    </p>
+                </div>
+            {% empty %}
+                <p>No comments till now!</p>
+            {% endfor %}
+        </div>
+        <div class="container mt-4">
+            <form action="{% url 'comment-task' object.id %}" method="post">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <button type="submit" class="btn btn-primary mt-2">Comment</button>
+            </form>
         </div>
     </div>
 {% endblock %}

@@ -32,6 +32,10 @@ class Board(BaseModel):
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_boards')
     members = models.ManyToManyField(User)
 
+    def save(self, *args, **kwargs):
+        super(Board, self).save(*args, **kwargs)
+        self.members.add(self.creator)
+
     def __str__(self):
         return self.name
 
@@ -44,7 +48,16 @@ class Task(BaseModel):
     members = models.ManyToManyField(User)
     board = models.ForeignKey(Board, on_delete=models.SET_NULL, null=True, blank=True, default=None)
 
+    def save(self, *args, **kwargs):
+        super(Task, self).save(*args, **kwargs)
+        self.members.add(self.creator)
+
     def __str__(self):
         return self.name
 
 
+class Comment(BaseModel):
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_comments')
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True, blank=True, default=None)

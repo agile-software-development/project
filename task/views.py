@@ -2,13 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView
-from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
+from django.views.generic.list import ListView
 
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm
-from .models import Task, Board, User
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm
+from .models import Task, Board, User, Comment
 
 
 def home(request):
@@ -80,6 +80,7 @@ def create_task_view(request):
         if form.is_valid():
             instance = form.save()
             instance.creator = request.user
+            instance.members.add(request.user)
             instance.save()
             return redirect('list-tasks')
         form.add_error(None, "Unsuccessful registration. Invalid information.")
@@ -91,10 +92,19 @@ def create_task_view(request):
 class TaskDetailView(DetailView):
     model = Task
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = TaskCommentForm()
+        context['comments'] = Comment.objects.filter(task_id=self.kwargs['pk'])
+        return context
+
 
 class TaskListView(ListView):
     model = Task
     paginate_by = 100  # if pagination is desired
+
+    def get_queryset(self):
+        return Task.objects.filter(members__id=self.request.user.id)
 
 
 class TaskDeleteView(DeleteView):
@@ -147,6 +157,11 @@ class TaskUpdateView(UpdateView):
     form_class = TaskForm
     success_url = reverse_lazy('list-tasks')
 
+    def form_valid(self, form):
+        response = super(TaskUpdateView, self).form_valid(form)
+        self.object.members.add(self.object.creator)
+        return response
+
 
 class BoardCreateView(CreateView):
     model = Board
@@ -156,6 +171,7 @@ class BoardCreateView(CreateView):
     def form_valid(self, form):
         response = super(BoardCreateView, self).form_valid(form)
         self.object.creator = self.request.user
+        self.object.members.add(self.request.user)
         self.object.save()
         return response
 
@@ -163,6 +179,9 @@ class BoardCreateView(CreateView):
 class BoardListView(ListView):
     model = Board
     paginate_by = 100
+
+    def get_queryset(self):
+        return Board.objects.filter(members__id=self.request.user.id)
 
 
 class BoardDeleteView(DeleteView):
@@ -175,3 +194,24 @@ class BoardUpdateView(UpdateView):
     model = Board
     form_class = BoardForm
     success_url = reverse_lazy('list-boards')
+
+    def form_valid(self, form):
+        response = super(BoardUpdateView, self).form_valid(form)
+        self.object.members.add(self.object.creator)
+        return response
+
+
+class CreateTaskCommentView(CreateView):
+    model = Comment
+    form_class = TaskCommentForm
+    success_url = reverse_lazy('list-tasks')
+
+    def form_valid(self, form):
+        response = super(CreateTaskCommentView, self).form_valid(form)
+        self.object.creator = self.request.user
+        self.object.task_id = self.kwargs['task_id']
+        self.object.save()
+        return response
+
+    def get_success_url(self):
+        return reverse('task-detail', args=(self.kwargs['task_id'],))
