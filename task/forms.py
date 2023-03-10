@@ -51,7 +51,7 @@ class UserProfileForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        exclude = ('created', 'updated')
+        exclude = ('created', 'updated', 'creator')
 
 
 class BoardForm(forms.ModelForm):

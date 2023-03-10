@@ -75,7 +75,9 @@ def create_task_view(request):
     if request.method == "POST":
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
+            instance = form.save()
+            instance.creator = request.user
+            instance.save()
             return redirect('list-tasks')
         form.add_error(None, "Unsuccessful registration. Invalid information.")
     else:
