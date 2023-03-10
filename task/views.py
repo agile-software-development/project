@@ -7,14 +7,15 @@ from django.views.generic import DetailView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from django.views.generic.edit import DeleteView, UpdateView, CreateView
 
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm
-from .models import Task, User
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm
+from .models import Task, Board, User
 
 
 def home(request):
     if request.user.is_authenticated:
-        return redirect('list-tasks')
+        return redirect('list-boards')
     return render(request, 'newHome.html')
 
 
@@ -77,7 +78,9 @@ def create_task_view(request):
     if request.method == "POST":
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
+            instance = form.save()
+            instance.creator = request.user
+            instance.save()
             return redirect('list-tasks')
         form.add_error(None, "Unsuccessful registration. Invalid information.")
     else:
@@ -141,4 +144,32 @@ class TaskUpdateView(UpdateView):
     model = Task
     form_class = TaskForm
     success_url = reverse_lazy('list-tasks')
-    # template_name =
+
+
+class BoardCreateView(CreateView):
+    model = Board
+    form_class = BoardForm
+    success_url = reverse_lazy('list-boards')
+
+    def form_valid(self, form):
+        response = super(BoardCreateView, self).form_valid(form)
+        self.object.creator = self.request.user
+        self.object.save()
+        return response
+
+
+class BoardListView(ListView):
+    model = Board
+    paginate_by = 100
+
+
+class BoardDeleteView(DeleteView):
+    model = Board
+    template_name = "task/board_delete.html"
+    success_url = reverse_lazy('list-boards')
+
+
+class BoardUpdateView(UpdateView):
+    model = Board
+    form_class = BoardForm
+    success_url = reverse_lazy('list-boards')
