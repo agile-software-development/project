@@ -1,5 +1,5 @@
-{% extends 'layout-sidenav-light.html' %}
-
+{% extends 'authenticated_user_base.html' %}
+{% block title %}Task List{% endblock %}
 {% block content %}
     <div class="row">
         {% for object in  object_list %}

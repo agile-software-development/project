@@ -1,4 +1,4 @@
-{% extends 'layout-sidenav-light.html' %}
+{% extends 'authenticated_user_base.html' %}
 
 {% block content %}
     <div class="row">
@@ -14,7 +14,9 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">tasks:
                             {% for task in object.task_set.all %}
-                                <a href="{% url 'update-task' task.id %}"><button class="btn  btn-outline-primary">{{ task.name }}</button></a>
+                                <a href="{% url 'update-task' task.id %}">
+                                    <button class="btn  btn-outline-primary">{{ task.name }}</button>
+                                </a>
                             {% endfor %}
                         </li>
                         <li class="list-group-item">members:

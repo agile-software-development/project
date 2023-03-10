@@ -14,10 +14,12 @@ from .models import Task, Board, User, Comment
 def home(request):
     if request.user.is_authenticated:
         return redirect('list-boards')
-    return render(request, 'newHome.html')
+    return render(request, 'home.html')
 
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('list-boards')
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -118,6 +120,8 @@ class TaskDeleteView(DeleteView):
 
 
 def reset_password(request):
+    if request.user.is_authenticated:
+        return redirect('list-boards')
     if request.method == 'POST':
         username = request.POST.get('username')
         mobile = request.POST.get('mobile')
