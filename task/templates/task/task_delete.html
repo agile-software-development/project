@@ -1,9 +1,9 @@
-{% extends 'layout-sidenav-light.html' %}
+{% extends 'authenticated_user_base.html' %}
 
 {% block content %}
     <form method="post">
         {% csrf_token %}
-            <p>Are you sure you want to delete task:"{{ object.name }}"?</p>
+        <p>Are you sure you want to delete task:"{{ object.name }}"?</p>
         <input type="submit" value="Confirm">
     </form>
 {% endblock %}
