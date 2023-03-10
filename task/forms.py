@@ -18,6 +18,7 @@ class UserRegisterForm(UserCreationForm):
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'ایجاد حساب کاربری', css_class='btn-success'))
         self.helper.form_method = 'POST'
+        self.helper.form_action = '.'
 
     def save(self, commit=True):
         user = super(UserRegisterForm, self).save(commit=False)
@@ -36,6 +37,7 @@ class LoginForm(forms.Form):
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
         self.helper.form_method = 'POST'
+        self.helper.form_action = '/login/'
 
 
 class UserProfileForm(forms.ModelForm):

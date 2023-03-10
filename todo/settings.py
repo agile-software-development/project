@@ -130,4 +130,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CSRF_TRUSTED_ORIGINS = ['https://agile-software-development.buddy.cloud']
-LOGIN_URL = '/user/login'
+LOGIN_URL = '/login'
+APPEND_SLASH = True

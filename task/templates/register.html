@@ -5,10 +5,8 @@
     <div class="card shadow-lg border-0 rounded-lg mt-5">
         <div class="card-header"><h3 class="text-center font-weight-light my-4">ثبت‌نام</h3></div>
         <div class="card-body">
-            <form action="/register" method="post">
-                {% crispy form %}
-                {% csrf_token %}
-            </form>
+            {% crispy form %}
+            {% csrf_token %}
         </div>
         <div class="card-footer text-center py-3">
             <div class="small"><a href="/login">قبلا حساب کاربری ساخته‌اید؟ وارد شوید.</a></div>
