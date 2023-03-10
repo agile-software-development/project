@@ -7,11 +7,17 @@ from .models import User, Task
 
 
 class UserRegisterForm(UserCreationForm):
-    phone_number = forms.CharField(label='Phone', required=True, max_length=200)
+    phone_number = forms.CharField(label='شماره تلفن', required=True, max_length=200)
 
     class Meta:
         model = User
         fields = ("phone_number", "username", "first_name", "last_name", "password1", "password2")
+
+    def __init__(self, *args, **kwargs):
+        super(UserRegisterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'ایجاد حساب کاربری', css_class='btn-success'))
+        self.helper.form_method = 'POST'
 
     def save(self, commit=True):
         user = super(UserRegisterForm, self).save(commit=False)
@@ -26,23 +32,10 @@ class LoginForm(forms.Form):
     password = forms.CharField(label='رمزعبور', widget=forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Field('username', wrapper_class='mb-3', css_class='form-control', placeholder="Username"),
-            Field('password', wrapper_class='mb-3', css_class='form-control', placeholder="Username"),
-            Div(
-                Div(
-                    Submit(name='submit', value='ورود', css_class='btn-block'),
-                    css_class='grid-4'),
-                css_class='mt-4 mb-0'
-            )
-        )
-
-    class Meta:
-        labels = {
-            'username': 'نام کاربری',
-        }
+        self.helper.add_input(Submit('submit', 'Submit', css_class='btn-primary'))
+        self.helper.form_method = 'POST'
 
 
 class UserProfileForm(forms.ModelForm):

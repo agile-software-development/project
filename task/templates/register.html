@@ -1,49 +1,13 @@
 {% extends 'new_base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}ثبت‌نام{% endblock %}
 {% block body %}
     <div class="card shadow-lg border-0 rounded-lg mt-5">
         <div class="card-header"><h3 class="text-center font-weight-light my-4">ثبت‌نام</h3></div>
         <div class="card-body">
-            <form>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputFirstName" type="text"
-                                   placeholder="نام خود را وارد کنید"/>
-                            <label for="inputFirstName">نام</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating">
-                            <input class="form-control" id="inputLastName" type="text"
-                                   placeholder="نام خانوادگی خود را وارد کنید"/>
-                            <label for="inputLastName">نام خانوادگی</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-floating mb-3">
-                    <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com"/>
-                    <label for="inputEmail">ایمیل</label>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputPassword" type="password"
-                                   placeholder="یک رمز عبور برای خود مشخص کنید"/>
-                            <label for="inputPassword">رمز عبور</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control" id="inputPasswordConfirm" type="password"
-                                   placeholder="رمز عبور خود را تکرار کنید"/>
-                            <label for="inputPasswordConfirm">تکرار رمز عبور</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4 mb-0">
-                    <div class="d-grid"><a class="btn btn-success btn-block" href="login.html">ایجاد حساب کاربری</a></div>
-                </div>
+            <form action="/register" method="post">
+                {% crispy form %}
+                {% csrf_token %}
             </form>
         </div>
         <div class="card-footer text-center py-3">
