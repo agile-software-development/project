@@ -42,10 +42,11 @@ class LoginForm(forms.Form):
 
 class UserProfileForm(forms.ModelForm):
     phone_number = forms.CharField(label='Phone', required=False, max_length=200)
+    theme = forms.Select(choices=User.themes)
 
     class Meta:
         model = User
-        fields = ("phone_number", "first_name", "last_name")
+        fields = ("phone_number", "first_name", "last_name", "theme")
 
 
 class TaskForm(forms.ModelForm):
