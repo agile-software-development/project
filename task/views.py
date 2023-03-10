@@ -138,7 +138,7 @@ def reset_password(request):
             new_password = str(random.randint(10 ** 8, 10 ** 9))
             user.set_password(new_password)
             user.save()
-            data = {'bodyId': 72060, 'to': user.get_full_name(), 'args': [user.username, new_password]}
+            data = {'bodyId': 72060, 'to': user.phone_number, 'args': [user.get_full_name(), new_password]}
             response = requests.post('https://console.melipayamak.com/api/send/shared/' + SMS_SECRET,
                                      json=data)
             print(response.text)
