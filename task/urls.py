@@ -21,5 +21,6 @@ urlpatterns = [
     path('boards/delete/<pk>', login_required(views.BoardDeleteView.as_view()), name='delete-board'),
     path('boards/update/<pk>', login_required(views.BoardUpdateView.as_view()), name='update-board'),
 
+    path('create-workspace/', login_required(views.WorkspaceCreateView.as_view()), name="create-workspace"),
     path('', views.home, name='home'),
 ]

@@ -7,8 +7,8 @@ from django.views.generic import DetailView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
 
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm
-from .models import Task, Board, User, Comment
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceCreationForm
+from .models import Task, Board, User, Comment, Workspace
 
 
 def home(request):
@@ -219,3 +219,16 @@ class CreateTaskCommentView(CreateView):
 
 def custom_404(request, exception):
     return render(request, "404.html")
+
+class WorkspaceCreateView(CreateView):
+    model = Workspace
+    form_class = WorkspaceCreationForm
+    success_url = reverse_lazy('list-workspaces')
+
+    def form_valid(self, form):
+        response = super(WorkspaceCreateView, self).form_valid(form)
+        self.object.creator = self.request.user
+        self.object.members.add(self.request.user)
+        self.object.save()
+        return response
+

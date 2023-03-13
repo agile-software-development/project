@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 
-from .models import User, Task, Board, Comment
+from .models import User, Task, Board, Comment, Workspace
 
 
 class UserRegisterForm(UserCreationForm):
@@ -84,3 +84,27 @@ class TaskCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('title', 'description')
+
+
+class WorkspaceCreationForm(forms.ModelForm):
+    boards = forms.ModelMultipleChoiceField(required=False, queryset=Board.objects.none())
+
+    class Meta:
+        model = Workspace
+        exclude = ('created', 'updated', 'creator')
+
+    def __init__(self, *args, **kwargs):
+        super(WorkspaceCreationForm, self).__init__(*args, **kwargs)
+        self.fields['boards'].queryset = Board.objects.filter(Q(workspace__isnull=True) | Q(workspace=self.instance))
+        self.fields['boards'].initial = Board.objects.filter(workspace=self.instance)
+
+    def save(self, commit=True):
+        instance = super(WorkspaceCreationForm, self).save(commit)
+        for board in instance.board_set.all():
+            board.workspace = None
+            task.save()
+
+        for board in self.cleaned_data['boards']:
+            board.workspace = instance
+            board.save()
+        return instance

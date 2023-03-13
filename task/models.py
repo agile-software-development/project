@@ -27,7 +27,21 @@ class User(AbstractUser):
     theme = models.CharField(max_length=255, choices=themes)
 
 
+class Workspace(BaseModel):
+    name = models.CharField(max_length=255)
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_workspaces')
+    members = models.ManyToManyField(User)
+
+    def save(self, *args, **kwargs):
+        super(Workspace, self).save(*args, **kwargs)
+        self.members.add(self.creator)
+
+    def __str__(self):
+        return self.name
+
+
 class Board(BaseModel):
+    workspace = models.ForeignKey(Workspace, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=255)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_boards')
     members = models.ManyToManyField(User)
