@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('create-board/', login_required(views.BoardCreateView.as_view()), name="create-board"),
     path('boards/', login_required(views.BoardListView.as_view()), name='list-boards'),
+    path('boards/<pk>', login_required(views.BoardSingleView.as_view()), name='view-board'),
     path('boards/delete/<pk>', login_required(views.BoardDeleteView.as_view()), name='delete-board'),
     path('boards/update/<pk>', login_required(views.BoardUpdateView.as_view()), name='update-board'),
 

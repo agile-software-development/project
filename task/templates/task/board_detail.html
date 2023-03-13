@@ -1,0 +1,24 @@
+{% extends 'authenticated_user_base.html' %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+    <div class="m-2">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ object.name }} <span class="badge bg-secondary small">{{ object.get_state_display }}</span>
+                <a href="{% url 'delete-board' object.id %}">
+                    <button type="button" class="btn btn-sm btn-danger float-end">Delete</button>
+                </a>
+                <a href="{% url 'update-board' object.id %}">
+                    <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
+                </a>
+            </h5>
+            <p class="card-text">{{ object.description }}</p>
+            <ul>
+                {% for member in object.members.all %}
+                    <li>{{ member }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

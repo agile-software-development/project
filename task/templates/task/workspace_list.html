@@ -11,7 +11,7 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Boards:
                             {% for board in object.board_set.all %}
-                                <a href="{% url 'update-board' board.id %}">
+                                <a href="{% url 'view-board' board.id %}">
                                     <button class="btn  btn-outline-primary">{{ board.name }}</button>
                                 </a>
                             {% endfor %}

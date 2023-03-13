@@ -184,6 +184,10 @@ class BoardListView(ListView):
         return Board.objects.filter(members__id=self.request.user.id)
 
 
+class BoardSingleView(DetailView):
+    model = Board
+
+
 class BoardDeleteView(DeleteView):
     model = Board
     template_name = "task/board_delete.html"
