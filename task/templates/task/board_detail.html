@@ -1,5 +1,6 @@
 {% extends 'authenticated_user_base.html' %}
 {% load crispy_forms_filters %}
+{% load in_state %}
 
 {% block content %}
     <div class="m-2">
@@ -19,6 +20,31 @@
                     <li>{{ member }}</li>
                 {% endfor %}
             </ul>
+            <div class="container">
+                <div class="row">
+                    {% for task_state in task_states %}
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-header">
+                                {{ task_state.name }}
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                {% for task in object.task_set|in_state:task_state %}
+                                    <li class="list-group-item">
+                                        {{ task }}
+                                        <a href="{% url 'task-detail' task.id %}">
+                                            <button type="button" class="btn btn-sm btn-outline-primary float-end">View</button>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+              </div>
         </div>
     </div>
 {% endblock %}

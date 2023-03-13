@@ -8,7 +8,7 @@ from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
 
 from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceCreationForm
-from .models import Task, Board, User, Comment, Workspace
+from .models import Task, Board, User, Comment, Workspace, TaskStates
 
 
 def home(request):
@@ -186,6 +186,11 @@ class BoardListView(ListView):
 
 class BoardSingleView(DetailView):
     model = Board
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task_states'] = [TaskStates.Todo, TaskStates.Doing, TaskStates.Done, TaskStates.Closed]
+        return context
 
 
 class BoardDeleteView(DeleteView):

@@ -22,13 +22,6 @@
                                 {% endfor %}
                             </ul>
                         </li>
-                        <li class="list-group-item">Tasks:
-                            {% for task in object.task_set.all %}
-                                <a href="{% url 'update-task' task.id %}">
-                                    <button class="btn  btn-outline-primary">{{ task.name }}</button>
-                                </a>
-                            {% endfor %}
-                        </li>
                     </ul>
                     <a href="{% url 'view-board' object.id %}">
                         <button class="btn btn-primary" type="submit">View</button>
