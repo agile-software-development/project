@@ -7,26 +7,31 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         {{ object.name }}
+                        <a href="{% url 'delete-board' object.id %}">
+                            <button type="button" class="btn btn-sm btn-danger float-end">Delete</button>
+                        </a>
                         <a href="{% url 'update-board' object.id %}">
                             <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
                         </a>
                     </h5>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">tasks:
+                        <li class="list-group-item">Members:
+                            <ul>
+                                {% for member in object.members.all %}
+                                    <li>{{ member }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="list-group-item">Tasks:
                             {% for task in object.task_set.all %}
                                 <a href="{% url 'update-task' task.id %}">
                                     <button class="btn  btn-outline-primary">{{ task.name }}</button>
                                 </a>
                             {% endfor %}
                         </li>
-                        <li class="list-group-item">members:
-                            {% for member in object.members.all %}
-                                <button class="btn btn-primary">{{ member.get_full_name }}</button>
-                            {% endfor %}
-                        </li>
                     </ul>
-                    <a href="{% url 'delete-board' object.id %}">
-                        <button class="btn btn-danger" type="submit">Delete</button>
+                    <a href="{% url 'view-board' object.id %}">
+                        <button class="btn btn-primary" type="submit">View</button>
                     </a>
                 </div>
             </div>
