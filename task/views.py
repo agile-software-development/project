@@ -220,6 +220,15 @@ class CreateTaskCommentView(CreateView):
 def custom_404(request, exception):
     return render(request, "404.html")
 
+
+class WorkspacesListView(ListView):
+    model = Workspace
+    paginate_by = 100
+
+    def get_queryset(self):
+        return Workspace.objects.filter(members__id=self.request.user.id)
+
+
 class WorkspaceCreateView(CreateView):
     model = Workspace
     form_class = WorkspaceCreationForm
