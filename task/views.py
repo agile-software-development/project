@@ -13,7 +13,7 @@ from .models import Task, Board, User, Comment, Workspace
 
 def home(request):
     if request.user.is_authenticated:
-        return redirect('list-boards')
+        return redirect('list-workspaces')
     return render(request, 'home.html')
 
 
