@@ -15,6 +15,7 @@ urlpatterns = [
     path('tasks/', login_required(views.TaskListView.as_view()), name='list-tasks'),
     path('tasks/delete/<pk>', login_required(views.TaskDeleteView.as_view()), name='delete-task'),
     path('tasks/update/<pk>', login_required(views.TaskUpdateView.as_view()), name='update-task'),
+    path('tasks/update/<pk>/state', views.change_task_state, name='change-task-state'),
 
     path('create-board/', login_required(views.BoardCreateView.as_view()), name="create-board"),
     path('boards/', login_required(views.BoardListView.as_view()), name='list-boards'),
