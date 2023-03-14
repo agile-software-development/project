@@ -61,6 +61,9 @@ class Board(BaseModel):
 
 
 class Task(BaseModel):
+    class Meta:
+        ordering = ('-priority', '-updated')
+
     name = models.CharField(max_length=255)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_tasks')
     state = models.PositiveSmallIntegerField(choices=TaskStates.choices, default=TaskStates.Todo.value)
