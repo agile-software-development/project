@@ -1,5 +1,6 @@
 {% extends 'base_templates/authenticated_user_base.html' %}
 {% load crispy_forms_filters %}
+{% load to_priority_tag %}
 
 {% block content %}
     <div class="m-2">
@@ -13,8 +14,11 @@
                     <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
                 </a>
             </h5>
-            <p class="card-text">{{ object.description }}</p>
             <ul class="list-group list-group-flush">
+                <li class="list-group-item">Priority: <span class="badge {{ task.priority|to_priority_tag}} small">{{ task.get_priority_display }}</span></li>
+                <li class="list-group-item">Description: {{ object.description }}</li>
+                <li class="list-group-item">Created: {{ object.created|date:'Y-m-d H:i' }}</li>
+                <li class="list-group-item">Updated: {{ object.updated|date:'Y-m-d H:i' }}</li>
                 <li class="list-group-item">Members:
                     <ul>
                         {% for member in object.members.all %}
