@@ -30,7 +30,7 @@ def register_view(request):
         form.add_error(None, "Unsuccessful registration. Invalid information.")
     else:
         form = UserRegisterForm()
-    return render(request=request, template_name="register.html", context={"form": form})
+    return render(request=request, template_name="auth/register.html", context={"form": form})
 
 
 def login_view(request):
@@ -53,7 +53,7 @@ def login_view(request):
     else:
         form = LoginForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'auth/login.html', {'form': form})
 
 
 @login_required()
@@ -71,7 +71,7 @@ def update_profile_view(request):
             return redirect('home')
     else:
         form = UserProfileForm(instance=request.user)
-    return render(request=request, template_name="update_profile.html", context={"form": form, "user": request.user})
+    return render(request=request, template_name="auth/update_profile.html", context={"form": form, "user": request.user})
 
 
 @login_required()
@@ -130,7 +130,7 @@ class TaskListView(ListView):
 class TaskDeleteView(DeleteView):
     model = Task
     success_url = reverse_lazy('list-tasks')
-    template_name = "task/task_delete.html"
+    template_name = "boards/templates/tasks/task_delete.html"
 
     success_message = "Task was deleted successfully."
 
@@ -147,7 +147,7 @@ def reset_password(request):
         mobile = request.POST.get('mobile')
         user = User.objects.filter(username=username, phone_number=mobile)
         if not user:
-            return render(request, 'password.html', {
+            return render(request, 'auth/password.html', {
                 'error': True
             })
         else:
@@ -162,12 +162,12 @@ def reset_password(request):
             response = requests.post('https://console.melipayamak.com/api/send/shared/' + SMS_SECRET,
                                      json=data)
             print(response.text)
-            return render(request, 'password.html', {
+            return render(request, 'auth/password.html', {
                 "success": True
             })
 
     else:
-        return render(request, 'password.html', {
+        return render(request, 'auth/password.html', {
             "success": False
         })
 
@@ -215,7 +215,7 @@ class BoardSingleView(DetailView):
 
 class BoardDeleteView(DeleteView):
     model = Board
-    template_name = "task/board_delete.html"
+    template_name = "boards/board_delete.html"
     success_url = reverse_lazy('list-boards')
 
 
@@ -247,7 +247,7 @@ class CreateTaskCommentView(CreateView):
 
 
 def custom_404(request, exception):
-    return render(request, "404.html")
+    return render(request, "errors/404.html")
 
 
 class WorkspacesListView(ListView):
