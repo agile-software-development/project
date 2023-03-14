@@ -6,8 +6,9 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
+from django.db.models import Q
 
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceCreationForm
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceForm
 from .models import Task, Board, User, Comment, Workspace, TaskStates
 
 
@@ -89,6 +90,25 @@ def create_task_view(request):
     return render(request=request, template_name="task.html", context={"form": form})
 
 
+@login_required()
+def change_task_state(request, pk):
+    if request.method != "POST":
+        return
+
+    task = Task.objects.get(id=pk)
+    action = request.POST.get('state')
+    if action == 'next':
+        task.state += 1
+    elif action == 'previous':
+        task.state -= 1
+
+    if 1 <= task.state <= 4:
+        task.save()
+
+    next = request.POST.get('next', '/')
+    return redirect(next)
+
+
 class TaskDetailView(DetailView):
     model = Task
 
@@ -104,7 +124,7 @@ class TaskListView(ListView):
     paginate_by = 100  # if pagination is desired
 
     def get_queryset(self):
-        return Task.objects.filter(members__id=self.request.user.id)
+        return Task.objects.filter(Q(members__id=self.request.user.id) | Q(board__members__id=self.request.user.id) | Q(board__workspace__members__id=self.request.user.id))
 
 
 class TaskDeleteView(DeleteView):
@@ -181,7 +201,7 @@ class BoardListView(ListView):
     paginate_by = 100
 
     def get_queryset(self):
-        return Board.objects.filter(members__id=self.request.user.id)
+        return Board.objects.filter(Q(members__id=self.request.user.id) | Q(workspace__members__id=self.request.user.id))
 
 
 class BoardSingleView(DetailView):
@@ -240,7 +260,7 @@ class WorkspacesListView(ListView):
 
 class WorkspaceCreateView(CreateView):
     model = Workspace
-    form_class = WorkspaceCreationForm
+    form_class = WorkspaceForm
     success_url = reverse_lazy('list-workspaces')
 
     def form_valid(self, form):
@@ -250,3 +270,13 @@ class WorkspaceCreateView(CreateView):
         self.object.save()
         return response
 
+
+class WorkspaceUpdateView(UpdateView):
+    model = Workspace
+    form_class = WorkspaceForm
+    success_url = reverse_lazy('list-workspaces')
+
+    def form_valid(self, form):
+        response = super(WorkspaceUpdateView, self).form_valid(form)
+        self.object.members.add(self.object.creator)
+        return response

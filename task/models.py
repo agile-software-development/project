@@ -9,6 +9,12 @@ class TaskStates(models.IntegerChoices):
     Closed = 4
 
 
+class TaskPriorities(models.IntegerChoices):
+    Low = 1
+    Medium = 2
+    High = 3
+
+
 class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -55,12 +61,16 @@ class Board(BaseModel):
 
 
 class Task(BaseModel):
+    class Meta:
+        ordering = ('-priority', '-updated')
+
     name = models.CharField(max_length=255)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_tasks')
     state = models.PositiveSmallIntegerField(choices=TaskStates.choices, default=TaskStates.Todo.value)
     description = models.TextField()
     members = models.ManyToManyField(User)
     board = models.ForeignKey(Board, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    priority = models.PositiveSmallIntegerField(choices=TaskPriorities.choices, default=TaskPriorities.Medium.value)
 
     def save(self, *args, **kwargs):
         super(Task, self).save(*args, **kwargs)

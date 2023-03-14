@@ -13,8 +13,9 @@ urlpatterns = [
     path('tasks/<task_id>/comment', login_required(views.CreateTaskCommentView.as_view()), name='comment-task'),
     path('tasks/<pk>', login_required(views.TaskDetailView.as_view()), name='task-detail'),
     path('tasks/', login_required(views.TaskListView.as_view()), name='list-tasks'),
-    path('tasks/delete/<pk>', login_required(views.TaskDeleteView.as_view())),
+    path('tasks/delete/<pk>', login_required(views.TaskDeleteView.as_view()), name='delete-task'),
     path('tasks/update/<pk>', login_required(views.TaskUpdateView.as_view()), name='update-task'),
+    path('tasks/update/<pk>/state', views.change_task_state, name='change-task-state'),
 
     path('create-board/', login_required(views.BoardCreateView.as_view()), name="create-board"),
     path('boards/', login_required(views.BoardListView.as_view()), name='list-boards'),
@@ -24,6 +25,7 @@ urlpatterns = [
 
     path('create-workspace/', login_required(views.WorkspaceCreateView.as_view()), name="create-workspace"),
     path('workspaces/', login_required(views.WorkspacesListView.as_view()), name='list-workspaces'),
+    path('workspaces/update/<pk>', login_required(views.WorkspaceUpdateView.as_view()), name='update-workspace'),
 
     path('', views.home, name='home'),
 ]

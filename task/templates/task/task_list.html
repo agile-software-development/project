@@ -1,4 +1,6 @@
 {% extends 'authenticated_user_base.html' %}
+{% load to_priority_tag %}
+
 {% block title %}Task List{% endblock %}
 {% block content %}
     <div class="row">
@@ -9,19 +11,17 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
+                        <span class="badge {{ object.priority|to_priority_tag}} small">{{ object.get_priority_display }}</span>
                         <a href="{% url 'task-detail' object.pk %}">
                             {{ object.name }}
                         </a>
-                        <a href="{% url 'update-task' object.id %}">
-                            <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
-                        </a>
                     </h5>
                     <p class="card-text">{{ object.description }}</p>
-                    {% for member in object.members.all %}
-                        <button class="btn btn-primary">{{ member.get_full_name }}</button>
-                    {% endfor %}
-                    <a href="/tasks/delete/{{ object.id }}">
-                        <button class="btn btn-danger" type="submit">Delete</button>
+                    <a href="{% url 'delete-task' object.id %}">
+                        <button type="button" class="btn btn-sm btn-danger float-end">Delete</button>
+                    </a>
+                    <a href="{% url 'update-task' object.id %}">
+                        <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
                     </a>
                 </div>
             </div>

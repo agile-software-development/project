@@ -1,6 +1,7 @@
 {% extends 'authenticated_user_base.html' %}
 {% load crispy_forms_filters %}
 {% load in_state %}
+{% load to_priority_tag %}
 
 {% block content %}
     <div class="m-2">
@@ -32,10 +33,27 @@
                                 <ul class="list-group list-group-flush">
                                 {% for task in object.task_set|in_state:task_state %}
                                     <li class="list-group-item">
-                                        {{ task }}
+                                        <span class="badge {{ task.priority|to_priority_tag}} small">{{ task.get_priority_display }}</span> {{ task }}
                                         <a href="{% url 'task-detail' task.id %}">
                                             <button type="button" class="btn btn-sm btn-outline-primary float-end">View</button>
                                         </a>
+                                        <p></p>
+                                        {% if task.state != 4 %}
+                                        <form action="{% url 'change-task-state' task.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input name="state" id="state" value="next" hidden="true"/>
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button class="btn btn-sm btn-outline-secondary float-end" type="submit">></button>
+                                        </form>
+                                        {% endif %}
+                                        {% if task.state != 1 %}
+                                        <form action="{% url 'change-task-state' task.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input name="state" id="state" value="previous" hidden="true"/>
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button class="btn btn-sm btn-outline-secondary float-end" type="submit"><</button>
+                                        </form>
+                                        {% endif %}
                                     </li>
                                 {% endfor %}
                                 </ul>
