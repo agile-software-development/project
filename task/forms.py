@@ -86,7 +86,7 @@ class TaskCommentForm(forms.ModelForm):
         fields = ('title', 'description')
 
 
-class WorkspaceCreationForm(forms.ModelForm):
+class WorkspaceForm(forms.ModelForm):
     boards = forms.ModelMultipleChoiceField(required=False, queryset=Board.objects.none())
 
     class Meta:
@@ -94,15 +94,15 @@ class WorkspaceCreationForm(forms.ModelForm):
         exclude = ('created', 'updated', 'creator')
 
     def __init__(self, *args, **kwargs):
-        super(WorkspaceCreationForm, self).__init__(*args, **kwargs)
+        super(WorkspaceForm, self).__init__(*args, **kwargs)
         self.fields['boards'].queryset = Board.objects.filter(Q(workspace__isnull=True) | Q(workspace=self.instance))
         self.fields['boards'].initial = Board.objects.filter(workspace=self.instance)
 
     def save(self, commit=True):
-        instance = super(WorkspaceCreationForm, self).save(commit)
+        instance = super(WorkspaceForm, self).save(commit)
         for board in instance.board_set.all():
             board.workspace = None
-            task.save()
+            board.save()
 
         for board in self.cleaned_data['boards']:
             board.workspace = instance
