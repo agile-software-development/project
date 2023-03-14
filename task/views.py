@@ -205,7 +205,9 @@ class BoardListView(ListView):
     template_name = 'boards/board_list.html'
 
     def get_queryset(self):
-        return Board.objects.filter(Q(members__id=self.request.user.id) | Q(workspace__members__id=self.request.user.id))
+        return Board.objects.filter(
+            Q(members__id=self.request.user.id) | Q(workspace__members__id=self.request.user.id)
+        ).distinct("id")
 
 
 class BoardSingleView(DetailView):
