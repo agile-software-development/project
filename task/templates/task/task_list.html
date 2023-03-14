@@ -1,4 +1,6 @@
 {% extends 'authenticated_user_base.html' %}
+{% load to_priority_tag %}
+
 {% block title %}Task List{% endblock %}
 {% block content %}
     <div class="row">
@@ -9,6 +11,7 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
+                        <span class="badge {{ object.priority|to_priority_tag}} small">{{ object.get_priority_display }}</span>
                         <a href="{% url 'task-detail' object.pk %}">
                             {{ object.name }}
                         </a>
