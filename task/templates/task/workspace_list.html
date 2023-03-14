@@ -11,22 +11,21 @@
                             <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
                         </a>
                     </h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Boards:
-                            {% for board in object.board_set.all %}
-                                <a href="{% url 'view-board' board.id %}">
-                                    <button class="btn  btn-outline-primary">{{ board.name }}</button>
-                                </a>
-                            {% endfor %}
-                        </li>
-                        <li class="list-group-item">Members:
-                            <ul>
-                            {% for member in object.members.all %}
-                                <li>{{ member }}</li>
-                            {% endfor %}
-                            </ul>
-                        </li>
-                    </ul>
+                </div>
+                <div class="card-body">
+                    Boards:
+                    {% for board in object.board_set.all %}
+                        <a href="{% url 'view-board' board.id %}">
+                            <button class="btn  btn-outline-primary">{{ board.name }}</button>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    Members:
+                    {% for member in object.members.all %}
+                        <span class="badge bg-warning text-black">{{ member }}</span>
+                    {% endfor %}
+
                 </div>
             </div>
         {% empty %}
