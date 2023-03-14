@@ -7,6 +7,9 @@
                 <div class="card-body">
                     <h5 class="card-title">
                         {{ object.name }}
+                        <a href="{% url 'update-workspace' object.id %}">
+                            <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
+                        </a>
                     </h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Boards:

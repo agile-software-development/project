@@ -8,7 +8,7 @@ from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.db.models import Q
 
-from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceCreationForm
+from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceForm
 from .models import Task, Board, User, Comment, Workspace, TaskStates
 
 
@@ -241,7 +241,7 @@ class WorkspacesListView(ListView):
 
 class WorkspaceCreateView(CreateView):
     model = Workspace
-    form_class = WorkspaceCreationForm
+    form_class = WorkspaceForm
     success_url = reverse_lazy('list-workspaces')
 
     def form_valid(self, form):
@@ -251,3 +251,13 @@ class WorkspaceCreateView(CreateView):
         self.object.save()
         return response
 
+
+class WorkspaceUpdateView(UpdateView):
+    model = Workspace
+    form_class = WorkspaceForm
+    success_url = reverse_lazy('list-workspaces')
+
+    def form_valid(self, form):
+        response = super(WorkspaceUpdateView, self).form_valid(form)
+        self.object.members.add(self.object.creator)
+        return response
