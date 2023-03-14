@@ -111,6 +111,7 @@ def change_task_state(request, pk):
 
 class TaskDetailView(DetailView):
     model = Task
+    template_name = 'tasks/task_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,6 +123,7 @@ class TaskDetailView(DetailView):
 class TaskListView(ListView):
     model = Task
     paginate_by = 100  # if pagination is desired
+    template_name = 'tasks/task_list.html'
 
     def get_queryset(self):
         return Task.objects.filter(Q(members__id=self.request.user.id) | Q(board__members__id=self.request.user.id) | Q(board__workspace__members__id=self.request.user.id))
@@ -130,8 +132,7 @@ class TaskListView(ListView):
 class TaskDeleteView(DeleteView):
     model = Task
     success_url = reverse_lazy('list-tasks')
-    template_name = "boards/templates/tasks/task_delete.html"
-
+    template_name = "tasks/task_delete.html"
     success_message = "Task was deleted successfully."
 
     def delete(self, request, *args, **kwargs):
@@ -176,6 +177,7 @@ class TaskUpdateView(UpdateView):
     model = Task
     form_class = TaskForm
     success_url = reverse_lazy('list-tasks')
+    template_name = 'tasks/task_form.html'
 
     def form_valid(self, form):
         response = super(TaskUpdateView, self).form_valid(form)
@@ -187,6 +189,7 @@ class BoardCreateView(CreateView):
     model = Board
     form_class = BoardForm
     success_url = reverse_lazy('list-boards')
+    template_name = 'boards/board_form.html'
 
     def form_valid(self, form):
         response = super(BoardCreateView, self).form_valid(form)
@@ -199,6 +202,7 @@ class BoardCreateView(CreateView):
 class BoardListView(ListView):
     model = Board
     paginate_by = 100
+    template_name = 'boards/board_list.html'
 
     def get_queryset(self):
         return Board.objects.filter(Q(members__id=self.request.user.id) | Q(workspace__members__id=self.request.user.id))
@@ -206,6 +210,7 @@ class BoardListView(ListView):
 
 class BoardSingleView(DetailView):
     model = Board
+    template_name = 'boards/board_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -223,6 +228,7 @@ class BoardUpdateView(UpdateView):
     model = Board
     form_class = BoardForm
     success_url = reverse_lazy('list-boards')
+    template_name = 'boards/board_form.html'
 
     def form_valid(self, form):
         response = super(BoardUpdateView, self).form_valid(form)
@@ -234,6 +240,7 @@ class CreateTaskCommentView(CreateView):
     model = Comment
     form_class = TaskCommentForm
     success_url = reverse_lazy('list-tasks')
+    template_name = 'tasks/task_form.html'
 
     def form_valid(self, form):
         response = super(CreateTaskCommentView, self).form_valid(form)
@@ -253,6 +260,7 @@ def custom_404(request, exception):
 class WorkspacesListView(ListView):
     model = Workspace
     paginate_by = 100
+    template_name = 'workspaces/workspace_list.html'
 
     def get_queryset(self):
         return Workspace.objects.filter(members__id=self.request.user.id)
@@ -262,6 +270,7 @@ class WorkspaceCreateView(CreateView):
     model = Workspace
     form_class = WorkspaceForm
     success_url = reverse_lazy('list-workspaces')
+    template_name = 'workspaces/workspace_form.html'
 
     def form_valid(self, form):
         response = super(WorkspaceCreateView, self).form_valid(form)
@@ -275,6 +284,7 @@ class WorkspaceUpdateView(UpdateView):
     model = Workspace
     form_class = WorkspaceForm
     success_url = reverse_lazy('list-workspaces')
+    template_name = 'workspaces/workspace_form.html'
 
     def form_valid(self, form):
         response = super(WorkspaceUpdateView, self).form_valid(form)
