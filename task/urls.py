@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('create-workspace/', login_required(views.WorkspaceCreateView.as_view()), name="create-workspace"),
     path('workspaces/', login_required(views.WorkspacesListView.as_view()), name='list-workspaces'),
+    path('workspaces/update/<pk>', login_required(views.WorkspaceUpdateView.as_view()), name='update-workspace'),
 
     path('', views.home, name='home'),
 ]
