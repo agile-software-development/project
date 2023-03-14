@@ -105,7 +105,7 @@ class TaskListView(ListView):
     paginate_by = 100  # if pagination is desired
 
     def get_queryset(self):
-        return Task.objects.filter(members__id=self.request.user.id)
+        return Task.objects.filter(Q(members__id=self.request.user.id) | Q(board__members__id=self.request.user.id) | Q(board__workspace__members__id=self.request.user.id))
 
 
 class TaskDeleteView(DeleteView):
