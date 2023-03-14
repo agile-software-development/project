@@ -6,17 +6,23 @@
         <div class="card-body">
             <h5 class="card-title">
                 {{ object.name }} <span class="badge bg-secondary small">{{ object.get_state_display }}</span>
+                <a href="{% url 'delete-task' object.id %}">
+                    <button type="button" class="btn btn-sm btn-danger float-end">Delete</button>
+                </a>
                 <a href="{% url 'update-task' object.id %}">
                     <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
                 </a>
             </h5>
             <p class="card-text">{{ object.description }}</p>
-            {% for member in object.members.all %}
-                <button class="btn btn-primary">{{ member.get_full_name }}</button>
-            {% endfor %}
-            <a href="/tasks/delete/{{ object.id }}">
-                <button class="btn btn-danger" type="submit">Delete</button>
-            </a>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Members:
+                    <ul>
+                        {% for member in object.members.all %}
+                            <li>{{ member }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
         </div>
         <hr/>
         <div class="container mt-4">
@@ -26,7 +32,7 @@
                         {{ comment.title }}
                     </p>
                     <small class="fst-italic small text-secondary">
-                        {{ comment.creator.get_full_name }}
+                        {{ comment.creator }} - ({{ comment.created|date:'Y-m-d H:i' }})
                     </small>
                     <p>
                         {{ comment.description }}
