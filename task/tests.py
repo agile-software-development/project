@@ -35,7 +35,7 @@ class TaskTest(TestCase):
 
     def test_create_task(self):
         self.client.login(username="user1", password="a;ljf034")
-        response = self.client.post("/create-task/", data={"name": "task1",
+        response = self.client.post("/create-boards/", data={"name": "task1",
                                                            "creator": "1",
                                                            "state": "2",
                                                            "description": "description1",

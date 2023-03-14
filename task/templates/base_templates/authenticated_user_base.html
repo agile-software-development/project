@@ -12,22 +12,31 @@
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/">TrellO</a>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-            class="fas fa-bars"></i></button>
-    <!-- Navbar-->
-    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <a class="navbar-brand ps-3" href="{% url 'home' %}">
+        <i class="fa fa-dashboard" aria-hidden="true"></i>
+        TrellO
+    </a>
+
+    <ul class="navbar-nav ms-auto me-3 me-lg-4 d-flex">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+               aria-expanded="false"><i class="fas fa-user fa-fw"></i>{{ request.user }}</a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' %}">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                    Edit Profile
+                </a></li>
                 <li>
                     <hr class="dropdown-divider"/>
                 </li>
-                <li><a class="dropdown-item alert-danger" href="{% url "logout" %}">Logout</a></li>
+                <li><a class="dropdown-item" href="{% url "logout" %}">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    Logout
+                </a></li>
             </ul>
         </li>
     </ul>
@@ -40,7 +49,7 @@
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Workspaces</div>
                     <a class="nav-link" href="{% url 'list-workspaces' %}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-folder"></i></div>
                         Workspaces list
                     </a>
                     <a class="nav-link" href="{% url 'create-workspace' %}">
@@ -51,7 +60,7 @@
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Boards</div>
                     <a class="nav-link" href="{% url 'list-boards' %}">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fas fa-th"></i></div>
                         Board List
                     </a>
                     <a class="nav-link" href="{% url 'create-board' %}">
@@ -72,8 +81,8 @@
                 </div>
             </div>
             <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                {{ request.user }}
+                <i class="fa fa-user"></i>
+                {{ request.user.get_full_name }}
             </div>
         </nav>
     </div>
