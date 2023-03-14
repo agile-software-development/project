@@ -6,6 +6,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
+from django.db.models import Q
 
 from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceCreationForm
 from .models import Task, Board, User, Comment, Workspace, TaskStates
@@ -104,7 +105,7 @@ class TaskListView(ListView):
     paginate_by = 100  # if pagination is desired
 
     def get_queryset(self):
-        return Task.objects.filter(members__id=self.request.user.id)
+        return Task.objects.filter(Q(members__id=self.request.user.id) | Q(board__members__id=self.request.user.id) | Q(board__workspace__members__id=self.request.user.id))
 
 
 class TaskDeleteView(DeleteView):
@@ -181,7 +182,7 @@ class BoardListView(ListView):
     paginate_by = 100
 
     def get_queryset(self):
-        return Board.objects.filter(members__id=self.request.user.id)
+        return Board.objects.filter(Q(members__id=self.request.user.id) | Q(workspace__members__id=self.request.user.id))
 
 
 class BoardSingleView(DetailView):
