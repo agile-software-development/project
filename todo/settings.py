@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-libh)roost$5g3gk9q)f(dk5pi@*k3ci=-hv43mpl$6e_*vwco'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('IS_SANDBOX', True) is None
+DEBUG = os.environ.get('IS_SANDBOX') is None
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap4',
-
     'task'
 ]
 
