@@ -8,6 +8,7 @@
             <div class="card col-4 m-2" style="width: 18rem;">
                 <div class="card-header">
                     {{ object.get_state_display }}
+                    <small class="float-end">{{ object.updated|date:'Y-m-d H:i' }}</small>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
