@@ -90,6 +90,25 @@ def create_task_view(request):
     return render(request=request, template_name="task.html", context={"form": form})
 
 
+@login_required()
+def change_task_state(request, pk):
+    if request.method != "POST":
+        return
+
+    task = Task.objects.get(id=pk)
+    action = request.POST.get('state')
+    if action == 'next':
+        task.state += 1
+    elif action == 'previous':
+        task.state -= 1
+
+    if 1 <= task.state <= 4:
+        task.save()
+
+    next = request.POST.get('next', '/')
+    return redirect(next)
+
+
 class TaskDetailView(DetailView):
     model = Task
 
