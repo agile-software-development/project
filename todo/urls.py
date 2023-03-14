@@ -19,10 +19,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404
 from task.views import custom_404
+from todo.settings import DEBUG
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('task.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
 
-handler404 = custom_404
+if not DEBUG:
+    handler404 = custom_404
