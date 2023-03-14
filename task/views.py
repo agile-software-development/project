@@ -207,7 +207,7 @@ class BoardListView(ListView):
     def get_queryset(self):
         return Board.objects.filter(
             Q(members__id=self.request.user.id) | Q(workspace__members__id=self.request.user.id)
-        ).distinct("id")
+        ).distinct("pk")
 
 
 class BoardSingleView(DetailView):
