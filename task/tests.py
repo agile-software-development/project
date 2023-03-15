@@ -2,7 +2,7 @@ import requests
 from django.test import TestCase
 from task.models import User, Task, Board, Workspace
 
-
+PASSWORD = "a;ljf034"
 # Create your tests here.
 
 class UserTest(TestCase):
@@ -42,8 +42,8 @@ class UserTest(TestCase):
                                              "username": "user1",
                                              "first_name": "user1_firstname",
                                              "last_name": "user1_lastname",
-                                             "password1": "a;ljf034",
-                                             "password2": "a;ljf034",
+                                             "password1": PASSWORD,
+                                             "password2": PASSWORD,
                                              })
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(username="user1").phone_number, "09227562938")
@@ -62,9 +62,9 @@ class UserTest(TestCase):
 
     def test_login(self):
         # setup   creating account
-        User.objects.create_user("user1", password="a;ljf034")
+        User.objects.create_user("user1", password=PASSWORD)
         # wrong username
-        response = self.client.login(username="user11", password="a;ljf034")
+        response = self.client.login(username="user11", password=PASSWORD)
         self.assertEqual(response, False)
 
         # wrong password
@@ -72,14 +72,14 @@ class UserTest(TestCase):
         self.assertEqual(response, False)
 
         # login successfully
-        response = self.client.login(username="user1", password="a;ljf034")
+        response = self.client.login(username="user1", password=PASSWORD)
         self.assertEqual(response, True)
 
     def test_edit_save(self):
         # setup   creating account
-        User.objects.create_user("user1", password="a;ljf034")
+        User.objects.create_user("user1", password=PASSWORD)
         # edit successfully
-        self.client.login(username="user1", password="a;ljf034")
+        self.client.login(username="user1", password=PASSWORD)
         response = self.client.post("/profile/", data={"phone_number": "09227562939",
                                                        "first_name": "saleh",
                                                        "last_name": "shoji",
@@ -95,11 +95,11 @@ class UserTest(TestCase):
 class BoardTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create_user("user1", password="a;ljf034")
+        User.objects.create_user("user1", password=PASSWORD)
 
     def test_create_board(self):
         # create task successfully
-        res = self.client.login(username="user1", password="a;ljf034")
+        res = self.client.login(username="user1", password=PASSWORD)
         response = self.client.post("/create-board/", data={"workspace": "",
                                                             "name": "board1",
                                                             "members": "1",
@@ -115,11 +115,11 @@ class BoardTest(TestCase):
 class TaskTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create_user("user1", password="a;ljf034")
+        User.objects.create_user("user1", password=PASSWORD)
 
     def test_create_task(self):
         # setup board
-        self.client.login(username="user1", password="a;ljf034")
+        self.client.login(username="user1", password=PASSWORD)
         self.client.post("/create-board/", data={"workspace": "",
                                                  "name": "board1",
                                                  "members": "1",
@@ -147,7 +147,7 @@ class TaskTest(TestCase):
 class FullScenarioTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        user1 = User.objects.create_user("user1", password="a;ljf034", phone_number="09381009988")
+        user1 = User.objects.create_user("user1", password=PASSWORD, phone_number="09381009988")
         user2 = User.objects.create_user("user2", password="asdfl;j34ro34jf", phone_number="09381009989")
         user3 = User.objects.create_user("user3", password="lf97ds9afkjls", phone_number="09381009990")
         user4 = User.objects.create_user("user4", password="ljfa;slf", phone_number="09381009987")
@@ -163,7 +163,7 @@ class FullScenarioTest(TestCase):
         self.assertEqual(User.objects.count(), 4)
         self.assertEqual(Board.objects.count(), 1)
         self.assertEqual(Task.objects.count(), 1)
-        self.client.login(username="user1", password="a;ljf034")
+        self.client.login(username="user1", password=PASSWORD)
         self.client.post("/create-task/", data={"name": "task2", "state": 1,
                                                 "description": "des1",
                                                 "members": "1",
