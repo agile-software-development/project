@@ -1,3 +1,4 @@
+import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -89,7 +90,7 @@ class Comment(BaseModel):
 
 
 class InviteLink(BaseModel):
-    uuid = models.UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     workspace = models.OneToOneField(Workspace, null=True, blank=True, on_delete=models.CASCADE)
     board = models.OneToOneField(Board, null=True, blank=True, on_delete=models.CASCADE)
     is_revoked = models.BooleanField(default=False)
