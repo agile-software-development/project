@@ -13,4 +13,10 @@
             <button type="submit" class="btn btn-primary">Create</button>
         {% endif %}
     </form>
+    <script src="https://unpkg.com/@jarstone/dselect/dist/js/dselect.js"></script>
+    <script>
+        dselect(document.querySelector('#id_members'), {
+            search: true
+        });
+    </script>
 {% endblock %}
