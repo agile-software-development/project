@@ -1,3 +1,4 @@
+import requests
 from django.test import TestCase
 from task.models import User, Task, Board
 
@@ -48,13 +49,15 @@ class UserTest(TestCase):
         # used username
         self.client.post("/register/", data={"phone_number": "09227562938",
                                              "username": "user1",
-                                             "firstname": "user1_firstname",
-                                             "lastname": "user1_lastname",
+                                             "first_name": "user1_firstname",
+                                             "last_name": "user1_lastname",
                                              "password1": "a;ljlkjf034",
                                              "password2": "a;ljlkjf034"
                                              })
         # no user should create - still one only
         self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(User.objects.get(username="user1").phone_number, "09227562938")
+
 
     def test_login(self):
         # setup   creating account
@@ -72,6 +75,8 @@ class UserTest(TestCase):
         self.assertEqual(response, True)
 
     def test_edit_save(self):
+        # setup   creating account
+        User.objects.create_user("user1", password="a;ljf034")
         # edit successfully
         self.client.login(username="user1", password="a;ljf034")
         response = self.client.post("/profile/", data={"phone_number": "09227562939",
@@ -80,27 +85,31 @@ class UserTest(TestCase):
                                                        "theme": "light"
                                                        })
         self.assertEqual(str(response).__contains__("302"), True)
+        self.assertEqual(User.objects.get(username="user1").phone_number, "09227562939")
+        self.assertEqual(User.objects.get(username="user1").first_name, "saleh")
+        self.assertEqual(User.objects.get(username="user1").last_name, "shoji")
+        self.assertEqual(User.objects.get(username="user1").theme, "light")
 
 
-# class TaskTest(TestCase):
-#     @classmethod
-#     def setUpTestData(cls):
-#         User.objects.create_user("user1", password="a;ljf034")
-#
-#     def test_create_task(self):
-#         # empty task list in start
-#
-#         # create task successfully
-#         self.client.login(username="user1", password="a;ljf034")
-#         response = self.client.post("/create-task/", data={"name": "task1",
-#                                                            "creator": "1",
-#                                                            "state": "2",
-#                                                            "description": "description1",
-#                                                            "members": "1",
-#                                                            "priority": "3"
-#                                                            })
-#         print(response)
-#         self.assertEqual(Task.objects.count(), 1)
+class TaskTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user("user1", password="a;ljf034")
+
+    def test_create_task(self):
+        # empty task list in start
+
+        # create task successfully
+        self.client.login(username="user1", password="a;ljf034")
+        response = self.client.post("/create-task/", data={"name": "task1",
+                                                           "creator": "1",
+                                                           "state": "2",
+                                                           "description": "description1",
+                                                           "members": "1",
+                                                           "priority": "3"
+                                                           })
+        print(response)
+        self.assertEqual(Task.objects.count(), 1)
 
 
 class BoardTest(TestCase):
@@ -110,10 +119,11 @@ class BoardTest(TestCase):
 
     def test_create_board(self):
         # create task successfully
-        self.client.login(username="user1", password="a;ljf034")
+        res = self.client.login(username="user1", password="a;ljf034")
         response = self.client.post("/create-board/", data={"workspace": "",
                                                             "name": "board1",
-                                                            "members": "3"})
+                                                            "members": "1",
+                                                            "creator": "1"})
         print(response)
         self.assertEqual(Board.objects.count(), 1)
 
