@@ -48,7 +48,7 @@ class UserTest(TestCase):
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(username="user1").phone_number, "09227562938")
         self.assertEqual(User.objects.get(username="user1").first_name, "user1_firstname")
-        self.assertEqual(User.objects.get(username="user1").first_name, "user1_lastname")
+        self.assertEqual(User.objects.get(username="user1").last_name, "user1_lastname")
         # used username
         self.client.post("/register/", data={"phone_number": "09227562938",
                                              "username": "user1",
@@ -108,7 +108,7 @@ class BoardTest(TestCase):
         board1 = Board.objects.get(name="board1")
         self.assertEqual(Board.objects.count(), 1)
         self.assertEqual(board1.members.get(username="user1"), User.objects.get(username="user1"))
-        self.assertEqual(board1.workspace, "")
+        self.assertEqual(board1.workspace, None)
         self.assertEqual(board1.creator, User.objects.get(username="user1"))
 
 
@@ -136,7 +136,7 @@ class TaskTest(TestCase):
         self.assertEqual(task.creator, User.objects.get(username="user1"))
         self.assertEqual(task.state, 1)
         self.assertEqual(task.description, "description1")
-        self.assertEqual(task.members, [User.objects.get(username="user1")])
+        self.assertEqual(list(task.members.all()), [User.objects.get(username="user1")])
         self.assertEqual(task.board, Board.objects.get(name="board1"))
         self.assertEqual(task.priority, 1)
 
