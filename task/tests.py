@@ -1,5 +1,5 @@
 from django.test import TestCase
-from task.models import User, Task
+from task.models import User, Task, Board
 
 
 # Create your tests here.
@@ -71,26 +71,50 @@ class UserTest(TestCase):
         response = self.client.login(username="user1", password="a;ljf034")
         self.assertEqual(response, True)
 
-    # def test_edit_save(self):
+    def test_edit_save(self):
+        # edit successfully
+        self.client.login(username="user1", password="a;ljf034")
+        response = self.client.post("/profile/", data={"phone_number": "09227562939",
+                                                       "first_name": "saleh",
+                                                       "last_name": "shoji",
+                                                       "theme": "light"
+                                                       })
+        self.assertEqual(str(response).__contains__("302"), True)
 
 
-class TaskTest(TestCase):
+# class TaskTest(TestCase):
+#     @classmethod
+#     def setUpTestData(cls):
+#         User.objects.create_user("user1", password="a;ljf034")
+#
+#     def test_create_task(self):
+#         # empty task list in start
+#
+#         # create task successfully
+#         self.client.login(username="user1", password="a;ljf034")
+#         response = self.client.post("/create-task/", data={"name": "task1",
+#                                                            "creator": "1",
+#                                                            "state": "2",
+#                                                            "description": "description1",
+#                                                            "members": "1",
+#                                                            "priority": "3"
+#                                                            })
+#         print(response)
+#         self.assertEqual(Task.objects.count(), 1)
+
+
+class BoardTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         User.objects.create_user("user1", password="a;ljf034")
 
-    def test_create_task(self):
-        # empty task list in start
-
+    def test_create_board(self):
         # create task successfully
         self.client.login(username="user1", password="a;ljf034")
-        response = self.client.post("/create-boards/", data={"name": "task1",
-                                                             "creator": "1",
-                                                             "state": "2",
-                                                             "description": "description1",
-                                                             "members": "1"
-                                                             })
+        response = self.client.post("/create-board/", data={"workspace": "",
+                                                            "name": "board1",
+                                                            "members": "3"})
         print(response)
-        self.assertEqual(Task.objects.count(), 1)
+        self.assertEqual(Board.objects.count(), 1)
 
 # class BoardTest(TestCase):
