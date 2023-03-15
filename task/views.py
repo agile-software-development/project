@@ -9,7 +9,7 @@ from django.views.generic.list import ListView
 from django.db.models import Q
 
 from .forms import UserRegisterForm, LoginForm, UserProfileForm, TaskForm, BoardForm, TaskCommentForm, WorkspaceForm
-from .models import Task, Board, User, Comment, Workspace, TaskStates
+from .models import Task, Board, User, Comment, Workspace, TaskStates, InviteLink
 
 
 def home(request):
@@ -296,3 +296,28 @@ class WorkspaceUpdateView(UpdateView):
         response = super(WorkspaceUpdateView, self).form_valid(form)
         self.object.members.add(self.object.creator)
         return response
+
+
+@login_required()
+def join_by_token(request):
+    if request.method != "GET":
+        return redirect('/')
+
+    token = request.GET.get('token')
+    invite_link = InviteLink.objects.get(uuid=token)
+    if invite_link.is_revoked:
+        return redirect('/')
+
+    if invite_link.workspace:
+        workspace = invite_link.workspace
+        workspace.members.add(request.user)
+        workspace.save()
+        return redirect('list-workspaces')
+
+    if invite_link.board:
+        board = invite_link.board
+        board.members.add(request.user)
+        board.save()
+        return redirect('view-board', pk=board.id)
+
+    return redirect('/')
