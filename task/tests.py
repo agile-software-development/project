@@ -40,12 +40,15 @@ class UserTest(TestCase):
         # create new account successfully
         self.client.post("/register/", data={"phone_number": "09227562938",
                                              "username": "user1",
-                                             "firstname": "user1_firstname",
-                                             "lastname": "user1_lastname",
+                                             "first_name": "user1_firstname",
+                                             "last_name": "user1_lastname",
                                              "password1": "a;ljf034",
-                                             "password2": "a;ljf034"
+                                             "password2": "a;ljf034",
                                              })
         self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(User.objects.get(username="user1").phone_number, "09227562938")
+        self.assertEqual(User.objects.get(username="user1").first_name, "user1_firstname")
+        self.assertEqual(User.objects.get(username="user1").first_name, "user1_lastname")
         # used username
         self.client.post("/register/", data={"phone_number": "09227562938",
                                              "username": "user1",
@@ -56,7 +59,6 @@ class UserTest(TestCase):
                                              })
         # no user should create - still one only
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(User.objects.get(username="user1").phone_number, "09227562938")
 
     def test_login(self):
         # setup   creating account
@@ -103,8 +105,11 @@ class BoardTest(TestCase):
                                                             "members": "1",
                                                             "creator": "1"})
         print(response)
+        board1 = Board.objects.get(name="board1")
         self.assertEqual(Board.objects.count(), 1)
-        self.assertEqual(Board.objects.get(name="board1").members.count(), 1)
+        self.assertEqual(board1.members.get(username="user1"), User.objects.get(username="user1"))
+        self.assertEqual(board1.workspace, "")
+        self.assertEqual(board1.creator, User.objects.get(username="user1"))
 
 
 class TaskTest(TestCase):
@@ -119,14 +124,24 @@ class TaskTest(TestCase):
                                                  "name": "board1",
                                                  "members": "1",
                                                  "creator": "1"})
-        response = self.client.post("/create-task/", data={"name": "javad", "state": "1",
-                                                           "description": "1",
+        response = self.client.post("/create-task/", data={"name": "task1", "state": "1",
+                                                           "description": "description1",
                                                            "members": "1",
                                                            "board": "1",
                                                            "priority": "1"
                                                            })
         print(response)
+        task = Task.objects.get(name="task1")
         self.assertEqual(Task.objects.count(), 1)
+        self.assertEqual(task.creator, User.objects.get(username="user1"))
+        self.assertEqual(task.state, 1)
+        self.assertEqual(task.description, "description1")
+        self.assertEqual(task.members, [User.objects.get(username="user1")])
+        self.assertEqual(task.board, Board.objects.get(name="board1"))
+        self.assertEqual(task.priority, 1)
+
+
+
 
 
 class FullScenarioTest(TestCase):
@@ -148,5 +163,17 @@ class FullScenarioTest(TestCase):
         self.assertEqual(User.objects.count(), 4)
         self.assertEqual(Board.objects.count(), 1)
         self.assertEqual(Task.objects.count(), 1)
-
-
+        self.client.login(username="user1", password="a;ljf034")
+        self.client.post("/create-task/", data={"name": "task2", "state": 1,
+                                                "description": "des1",
+                                                "members": "1",
+                                                "board": "1",
+                                                "priority": 1
+                                                })
+        task = Task.objects.get(name="task2")
+        self.assertEqual(task.creator.username, "user1")
+        self.assertEqual(task.state, 1)
+        self.assertEqual(task.description, "des1")
+        self.assertEqual(task.members.get(username="user1").username, "user1")
+        self.assertEqual(task.board.name, "board1")
+        self.assertEqual(task.priority, 1)
