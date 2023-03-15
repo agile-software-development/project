@@ -24,45 +24,54 @@
             <div class="container">
                 <div class="row">
                     {% for task_state in task_states %}
-                    <div class="col-sm">
-                        <div class="card">
-                            <div class="card-header">
-                                {{ task_state.name }}
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                {% for task in object.task_set|in_state:task_state %}
-                                    <li class="list-group-item">
-                                        <span class="badge {{ task.priority|to_priority_tag}} small">{{ task.get_priority_display }}</span> {{ task }}
-                                        <a href="{% url 'task-detail' task.id %}">
-                                            <button type="button" class="btn btn-sm btn-outline-primary float-end">View</button>
-                                        </a>
-                                        <p></p>
-                                        {% if task.state != 4 %}
-                                        <form action="{% url 'change-task-state' task.id %}" method="POST">
-                                            {% csrf_token %}
-                                            <input name="state" id="state" value="next" hidden="true"/>
-                                            <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button class="btn btn-sm btn-outline-secondary float-end" type="submit">></button>
-                                        </form>
-                                        {% endif %}
-                                        {% if task.state != 1 %}
-                                        <form action="{% url 'change-task-state' task.id %}" method="POST">
-                                            {% csrf_token %}
-                                            <input name="state" id="state" value="previous" hidden="true"/>
-                                            <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button class="btn btn-sm btn-outline-secondary float-end" type="submit"><</button>
-                                        </form>
-                                        {% endif %}
-                                    </li>
-                                {% endfor %}
-                                </ul>
+                        <div class="col-sm">
+                            <div class="card">
+                                <div class="card-header">
+                                    {{ task_state.name }}
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        {% for task in object.task_set|in_state:task_state %}
+                                            <li class="list-group-item">
+                                                <span class="badge {{ task.priority|to_priority_tag }} small">{{ task.get_priority_display }}</span> {{ task }}
+                                                <a href="{% url 'task-detail' task.id %}">
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-primary float-end">View
+                                                    </button>
+                                                </a>
+                                                <p></p>
+                                                {% if task.state != 4 %}
+                                                    <form action="{% url 'change-task-state' task.id %}"
+                                                          method="POST">
+                                                        {% csrf_token %}
+                                                        <input name="state" id="state" value="next" hidden="true"/>
+                                                        <input type="hidden" name="next" value="{{ request.path }}">
+                                                        <button class="btn btn-sm btn-outline-secondary float-end"
+                                                                type="submit"><i class="fa fa-arrow-right"></i>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                                {% if task.state != 1 %}
+                                                    <form action="{% url 'change-task-state' task.id %}"
+                                                          method="POST">
+                                                        {% csrf_token %}
+                                                        <input name="state" id="state" value="previous"
+                                                               hidden="true"/>
+                                                        <input type="hidden" name="next" value="{{ request.path }}">
+                                                        <button class="btn btn-sm btn-outline-secondary float-end"
+                                                                type="submit"><i class="fa fa-arrow-left"></i>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
                 </div>
-              </div>
+            </div>
         </div>
     </div>
 {% endblock %}
