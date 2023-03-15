@@ -16,6 +16,12 @@
                 </a>
             </h5>
             <p class="card-text">{{ object.description }}</p>
+            <p>
+            {% if object.invitelink %}
+                <a href="/join?token={{ object.invitelink.uuid }}">Invite Link</a>
+            {% endif %}
+            </p>
+            Members:
             <ul>
                 {% for member in object.members.all %}
                     <li>{{ member }}</li>

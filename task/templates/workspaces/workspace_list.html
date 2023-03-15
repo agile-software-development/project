@@ -30,6 +30,13 @@
                     {% endfor %}
 
                 </div>
+                <div class="card-body">
+                    <p>
+                        {% if object.invitelink %}
+                            <a href="/join?token={{ object.invitelink.uuid }}">Invite Link</a>
+                        {% endif %}
+                    </p>
+                </div>
             </div>
         {% empty %}
             <p>No Workspace has created yet.</p>
