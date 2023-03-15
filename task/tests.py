@@ -1,6 +1,6 @@
 import requests
 from django.test import TestCase
-from task.models import User, Task, Board
+from task.models import User, Task, Board, Workspace
 
 
 # Create your tests here.
@@ -58,7 +58,6 @@ class UserTest(TestCase):
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(username="user1").phone_number, "09227562938")
 
-
     def test_login(self):
         # setup   creating account
         User.objects.create_user("user1", password="a;ljf034")
@@ -91,27 +90,6 @@ class UserTest(TestCase):
         self.assertEqual(User.objects.get(username="user1").theme, "light")
 
 
-class TaskTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create_user("user1", password="a;ljf034")
-
-    def test_create_task(self):
-        # empty task list in start
-
-        # create task successfully
-        self.client.login(username="user1", password="a;ljf034")
-        response = self.client.post("/create-task/", data={"name": "task1",
-                                                           "creator": "1",
-                                                           "state": "2",
-                                                           "description": "description1",
-                                                           "members": "1",
-                                                           "priority": "3"
-                                                           })
-        print(response)
-        self.assertEqual(Task.objects.count(), 1)
-
-
 class BoardTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -126,5 +104,49 @@ class BoardTest(TestCase):
                                                             "creator": "1"})
         print(response)
         self.assertEqual(Board.objects.count(), 1)
+        self.assertEqual(Board.objects.get(name="board1").members.count(), 1)
 
-# class BoardTest(TestCase):
+
+class TaskTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user("user1", password="a;ljf034")
+
+    def test_create_task(self):
+        # setup board
+        self.client.login(username="user1", password="a;ljf034")
+        self.client.post("/create-board/", data={"workspace": "",
+                                                 "name": "board1",
+                                                 "members": "1",
+                                                 "creator": "1"})
+        response = self.client.post("/create-task/", data={"name": "javad", "state": "1",
+                                                           "description": "1",
+                                                           "members": "1",
+                                                           "board": "1",
+                                                           "priority": "1"
+                                                           })
+        print(response)
+        self.assertEqual(Task.objects.count(), 1)
+
+
+class FullScenarioTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user1 = User.objects.create_user("user1", password="a;ljf034", phone_number="09381009988")
+        user2 = User.objects.create_user("user2", password="asdfl;j34ro34jf", phone_number="09381009989")
+        user3 = User.objects.create_user("user3", password="lf97ds9afkjls", phone_number="09381009990")
+        user4 = User.objects.create_user("user4", password="ljfa;slf", phone_number="09381009987")
+        workspace = Workspace.objects.create(name="work1", creator_id=1)
+        workspace.members.set([user1, user2, user3, user4])
+        board1 = Board.objects.create(workspace=workspace, name="board1")
+        board1.members.set([user1, user2, user3, user4])
+        task1 = Task.objects.create(name="task1", creator_id=1, state=1, description="description11", board=board1,
+                                    priority=1)
+        task1.members.set([user1, user2, user3, user4])
+
+    def test_all_scenario(self):
+        self.assertEqual(User.objects.count(), 4)
+        self.assertEqual(Board.objects.count(), 1)
+        self.assertEqual(Task.objects.count(), 1)
+
+
