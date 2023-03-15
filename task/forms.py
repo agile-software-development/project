@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 
-from .models import User, Task, Board, Comment, Workspace
+from .models import User, Task, Board, Comment, Workspace, InviteLink
 
 
 class UserRegisterForm(UserCreationForm):
@@ -77,6 +77,10 @@ class BoardForm(forms.ModelForm):
         for task in self.cleaned_data['tasks']:
             task.board = instance
             task.save()
+
+        link = InviteLink(board=instance)
+        link.save()
+
         return instance
 
 
@@ -107,4 +111,8 @@ class WorkspaceForm(forms.ModelForm):
         for board in self.cleaned_data['boards']:
             board.workspace = instance
             board.save()
+
+        link = InviteLink(workspace=instance)
+        link.save()
+
         return instance
