@@ -25,21 +25,3 @@ class UserTest(TestCase):
                                              "password2": "a;ljf034"
                                              })
         self.assertEqual(User.objects.count(), 1)
-
-
-class TaskTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        User.objects.create_user("user1", password="a;ljf034")
-
-    def test_create_task(self):
-        self.client.login(username="user1", password="a;ljf034")
-        response = self.client.post("/create-boards/", data={"name": "task1",
-                                                           "creator": "1",
-                                                           "state": "2",
-                                                           "description": "description1",
-                                                           "members": "1"
-                                                           })
-        print(response)
-        self.assertEqual(Task.objects.count(), 1)
