@@ -19,10 +19,14 @@
                     </h5>
                     <p class="card-text">{{ object.description }}</p>
                     <a href="{% url 'delete-task' object.id %}">
-                        <button type="button" class="btn btn-sm btn-danger float-end">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger float-end">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </a>
                     <a href="{% url 'update-task' object.id %}">
-                        <button type="button" class="btn btn-sm btn-outline-info float-end">Edit</button>
+                        <button type="button" class="btn btn-sm btn-outline-info float-end">
+                            <i class="fa fa-pen-to-square"></i>
+                        </button>
                     </a>
                 </div>
             </div>
