@@ -5,29 +5,31 @@
 {% block content %}
     <div class="row">
         {% for object in  object_list %}
-            <div class="card col-4 m-2" style="width: 18rem;">
-                <div class="card-header">
-                    {{ object.get_state_display }}
-                    <small class="float-end">{{ object.updated|date:'Y-m-d H:i' }}</small>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <span class="badge {{ object.priority|to_priority_tag}} small">{{ object.get_priority_display }}</span>
-                        <a href="{% url 'task-detail' object.pk %}">
-                            {{ object.name }}
+            <div class="col-sm-6 col-md-3 my-3">
+                <div class="card">
+                    <div class="card-header">
+                        {{ object.get_state_display }}
+                        <small class="float-end">{{ object.updated|date:'Y-m-d H:i' }}</small>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <span class="badge {{ object.priority|to_priority_tag}} small">{{ object.get_priority_display }}</span>
+                            <a href="{% url 'task-detail' object.pk %}">
+                                {{ object.name }}
+                            </a>
+                        </h5>
+                        <p class="card-text">{{ object.description }}</p>
+                        <a href="{% url 'delete-task' object.id %}">
+                            <button type="button" class="btn btn-sm btn-danger float-end">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </a>
-                    </h5>
-                    <p class="card-text">{{ object.description }}</p>
-                    <a href="{% url 'delete-task' object.id %}">
-                        <button type="button" class="btn btn-sm btn-danger float-end">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </a>
-                    <a href="{% url 'update-task' object.id %}">
-                        <button type="button" class="btn btn-sm btn-outline-info float-end">
-                            <i class="fa fa-pen-to-square"></i>
-                        </button>
-                    </a>
+                        <a href="{% url 'update-task' object.id %}">
+                            <button type="button" class="btn btn-sm btn-outline-info float-end">
+                                <i class="fa fa-pen-to-square"></i>
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </div>
         {% empty %}
