@@ -126,7 +126,11 @@ class TaskListView(ListView):
     template_name = 'tasks/task_list.html'
 
     def get_queryset(self):
-        return Task.objects.filter(Q(members__id=self.request.user.id) | Q(board__members__id=self.request.user.id) | Q(board__workspace__members__id=self.request.user.id))
+        return Task.objects.filter(
+                Q(members__id=self.request.user.id)
+                | Q(board__members__id=self.request.user.id)
+                | Q(board__workspace__members__id=self.request.user.id)
+            ).distinct()
 
 
 class TaskDeleteView(DeleteView):
@@ -207,7 +211,7 @@ class BoardListView(ListView):
     def get_queryset(self):
         return Board.objects.filter(
             Q(members__id=self.request.user.id) | Q(workspace__members__id=self.request.user.id)
-        )
+        ).distinct()
 
 
 class BoardSingleView(DetailView):
