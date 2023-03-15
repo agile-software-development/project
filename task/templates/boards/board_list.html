@@ -3,7 +3,8 @@
 {% block content %}
     <div class="row">
         {% for object in  object_list %}
-            <div class="card col-md-4 m-2 text-center" style="width: 18rem;">
+        <div class="col-sm-6 col-md-3 my-3">
+            <div class="card text-center">
                 <div class="card-header">
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item">
@@ -36,6 +37,7 @@
                     </a>
                 </div>
             </div>
+        </div>
         {% empty %}
             <p>No Board has created yet.</p>
         {% endfor %}
