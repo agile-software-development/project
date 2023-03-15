@@ -18,3 +18,8 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(models.Board)
 class BoardAdmin(admin.ModelAdmin):
     list_display = [field.name for field in models.Board._meta.fields]
+
+
+@admin.register(models.InviteLink)
+class InviteLinkAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in models.InviteLink._meta.fields]

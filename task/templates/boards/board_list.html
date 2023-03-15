@@ -3,37 +3,89 @@
 {% block content %}
     <div class="row">
         {% for object in  object_list %}
-            <div class="card col-md-4 m-2 text-center" style="width: 18rem;">
-                <div class="card-header">
-                    <ul class="nav nav-pills card-header-pills">
-                        <li class="nav-item">
-                            <a href="{% url 'delete-board' object.id %}" class="btn m-1">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'update-board' object.id %}" class="btn m-1">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="card-title">
-                        <h5>{{ object.name }}</h5>
+            <div class="col-sm-6 col-md-3 my-3">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <ul class="nav nav-pills card-header-pills">
+                            <li class="nav-item">
+                                <a href="{% url 'delete-board' object.id %}" class="btn m-1">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'update-board' object.id %}" class="btn m-1">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </li>
+                            {% if object.invitelink != None %}
+                                <li class="nav-item">
+                                    <button class="btn m-1" data-bs-toggle="modal"
+                                            data-bs-target="#modal-{{ object.id }}">
+                                        <i class="fa fa-link"></i>
+                                    </button>
+                                    <div class="modal fade" id="modal-{{ object.id }}" tabindex="-1"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                        Share {{ object.name }} Board</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <div class="input-group">
+
+                                                        <span id="copyButton" class="input-group-addon btn"
+                                                              title="Click to copy" onclick="copy_{{ object.id }}()">
+                                                            <i class="fa fa-clipboard" aria-hidden="true"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control"
+                                                               id="link-{{ object.id }}"
+                                                               value="http://new.asdfghj.ir:8000{% url 'join' %}?token={{ object.invitelink.uuid }}"/>
+                                                    </div>
+                                                    <script type="text/javascript">
+                                                        function copy_{{ object.id }}() {
+                                                            var copyText = document.getElementById("link-{{ object.id }}");
+
+                                                            copyText.select();
+                                                            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+                                                            navigator.clipboard.writeText(copyText.value);
+                                                        }
+                                                    </script>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </li>
+                            {% endif %}
+                        </ul>
                     </div>
-                    <p class="card-text">
-                        Members:
-                        {% for member in object.members.all %}
-                            <span class="badge bg-warning text-black">{{ member }}</span>
-                        {% endfor %}
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h5>{{ object.name }}</h5>
+                        </div>
+                        <p class="card-text">
+                            Members:
+                            {% for member in object.members.all %}
+                                <span class="badge bg-warning text-black">{{ member }}</span>
+                            {% endfor %}
 
-                    </p>
+                        </p>
 
-                    <a href="{% url 'view-board' object.id %}" class="btn btn-primary">
-                        <i class="fa fa-eye"></i>
-                        View
-                    </a>
+                        <a href="{% url 'view-board' object.id %}" class="btn btn-primary">
+                            <i class="fa fa-eye"></i>
+                            View
+                        </a>
+                    </div>
                 </div>
             </div>
         {% empty %}

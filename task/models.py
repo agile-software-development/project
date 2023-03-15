@@ -1,3 +1,4 @@
+import uuid as uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -35,7 +36,8 @@ class User(AbstractUser):
 
 class Workspace(BaseModel):
     name = models.CharField(max_length=255)
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_workspaces')
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                                related_name='created_workspaces')
     members = models.ManyToManyField(User)
 
     def save(self, *args, **kwargs):
@@ -85,3 +87,10 @@ class Comment(BaseModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
     task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+
+
+class InviteLink(BaseModel):
+    uuid = models.UUIDField(default=uuid.uuid4, null=True)
+    workspace = models.OneToOneField(Workspace, null=True, blank=True, on_delete=models.CASCADE)
+    board = models.OneToOneField(Board, null=True, blank=True, on_delete=models.CASCADE)
+    is_revoked = models.BooleanField(default=False)
