@@ -27,5 +27,7 @@ urlpatterns = [
     path('workspaces/', login_required(views.WorkspacesListView.as_view()), name='list-workspaces'),
     path('workspaces/update/<pk>', login_required(views.WorkspaceUpdateView.as_view()), name='update-workspace'),
 
+    path('join/', views.join_by_token, name='join'),
+
     path('', views.home, name='home'),
 ]
