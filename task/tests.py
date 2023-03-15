@@ -1,8 +1,10 @@
 import requests
 from django.test import TestCase
-from task.models import User, Task, Board, Workspace
+from task.models import *
 
 PASSWORD = "a;ljf034"
+
+
 # Create your tests here.
 
 class UserTest(TestCase):
@@ -141,7 +143,20 @@ class TaskTest(TestCase):
         self.assertEqual(task.priority, 1)
 
 
+class WorkSpaceTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user("user1", password=PASSWORD)
 
+    def test_workspace(self):
+        self.client.login(username="user1", password=PASSWORD)
+        self.client.post("/create-workspace/", data={"name": "workspace1",
+                                                     "members": "1"})
+
+        self.assertEqual(Workspace.objects.count(), 1)
+        workspace = Workspace.objects.get(name="workspace1")
+        self.assertEqual(workspace.creator, User.objects.get(username="user1"))
+        self.assertEqual(list(workspace.members.all()), [User.objects.get(username="user1")])
 
 
 class FullScenarioTest(TestCase):
