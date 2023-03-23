@@ -31,4 +31,17 @@ Landing:
 Create task:
 ![Create task](https://user-images.githubusercontent.com/44050162/227344861-36a6cdd8-79f6-4a9a-8a79-a217ee150a1b.png)
 
+Tasks list:
+![image](https://user-images.githubusercontent.com/44050162/227347976-9b63d501-08d8-4f58-998c-6eaa311e0e82.png)
 
+Create board:
+![image](https://user-images.githubusercontent.com/44050162/227348489-5525858c-8d61-49df-bd66-87a1a84389b0.png)
+
+Board:
+![image](https://user-images.githubusercontent.com/44050162/227348686-466a49ba-eed3-4f25-8b9a-5945c03d3f72.png)
+
+Boards list:
+![image](https://user-images.githubusercontent.com/44050162/227348798-0f69d9ec-3613-475d-8a6d-8aa9ac674296.png)
+
+Workspaces:
+![image](https://user-images.githubusercontent.com/44050162/227349316-ab968dc7-b0e0-4306-8c73-5a0768fc298c.png)
