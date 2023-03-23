@@ -45,3 +45,6 @@ Boards list:
 
 Workspaces:
 ![image](https://user-images.githubusercontent.com/44050162/227349316-ab968dc7-b0e0-4306-8c73-5a0768fc298c.png)
+
+Forget password(using sms):
+![image](https://user-images.githubusercontent.com/44050162/227350237-bc052431-3298-4d7e-8a8b-f9bb8292ca0d.png)
