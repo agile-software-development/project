@@ -34,6 +34,10 @@ Create task:
 Tasks list:
 ![image](https://user-images.githubusercontent.com/44050162/227347976-9b63d501-08d8-4f58-998c-6eaa311e0e82.png)
 
+Taks details(and comments):
+![image](https://user-images.githubusercontent.com/44050162/227351832-08c491e7-a993-40a7-8aa5-5b524d027e9e.png)
+
+
 Create board:
 ![image](https://user-images.githubusercontent.com/44050162/227348489-5525858c-8d61-49df-bd66-87a1a84389b0.png)
 
